@@ -1,0 +1,23 @@
+{
+  "name": "contactsservice",
+  "version": "1.0.0",
+  "description": "eums contacts service",
+  "main": "client.js",
+  "scripts": {
+    "test": "node test.js",
+    "bundle": "browserify client.js -o bundle.js",
+    "start": "npm run bundle && nodemon server.js"
+  },
+  "author": "Thoughtworks",
+  "license": "ISC",
+  "devDependencies": {
+    "beefy": "^2.1.1",
+    "browserify": "^5.11.1",
+    "tape": "^2.14.0"
+  },
+  "dependencies": {
+  "express": "*",
+  "nodemon": "*",
+  "mongoose": "*"
+  }
+}
