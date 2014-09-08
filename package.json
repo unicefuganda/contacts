@@ -1,23 +1,37 @@
 {
-  "name": "contactsservice",
+  "name": "unicefcontacts",
   "version": "1.0.0",
+  "private": true,
   "description": "eums contacts service",
-  "main": "client.js",
-  "scripts": {
-    "test": "node test.js",
-    "bundle": "browserify client.js -o bundle.js",
-    "start": "npm run bundle && nodemon server.js"
-  },
-  "author": "Thoughtworks",
+  "main": "source/app.js",
+  "author": "Thoughtworks Uganda",
   "license": "ISC",
+  "scripts": {
+    "start": "nodemon source/app.js"
+  },
   "devDependencies": {
     "beefy": "^2.1.1",
     "browserify": "^5.11.1",
-    "tape": "^2.14.0"
+    "tape": "^2.14.0",
+    "grunt": "~0.4.5",
+    "grunt-contrib-jshint": "~0.10.0",
+    "grunt-contrib-nodeunit": "~0.4.1",
+    "grunt-contrib-uglify": "~0.5.0",
+    "karma": "^0.12.23",
+    "grunt-karma": "^0.9.0",
+    "karma-script-launcher": "~0.1",
+    "karma-chrome-launcher": "~0.1",
+    "karma-firefox-launcher": "~0.1",
+    "karma-ie-launcher": "~0.1",
+    "karma-jasmine": "~0.1",
+    "karma-phantomjs-launcher": "~0.1",
+    "karma-story-reporter": "~0.2.2",
+    "grunt-cli": "~0.1",
+    "karma-sauce-launcher": "~0.1"
   },
   "dependencies": {
-  "express": "*",
-  "nodemon": "*",
-  "mongoose": "*"
+    "express": "*",
+    "nodemon": "*",
+    "mongoose": "*"
   }
 }
