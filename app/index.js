@@ -1,4 +1,4 @@
-var counter  = function(first, second) {
+exports.counter  = function (first, second) {
   return first + second;
 };
 

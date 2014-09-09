@@ -2,22 +2,19 @@ module.exports = function(config) {
 		config.set({
 
 				// base path, that will be used to resolve files and exclude
-				basePath: '../tests/',
+				basePath: '',
 
 				// frameworks to use
 				frameworks: ['jasmine'],
 
 				// list of files / patterns to load in the browser
-				files: [
-						'**/*.js'
-				],
+				files: ['test/*.js', 'app/*.js'],
 
 				// list of files to exclude
-				exclude: [
-				],
+				exclude: ['karma.conf.js'],
 
 				// test results reporter to use
-				reporters: ['progress'],
+				reporters: ['progress', 'coverage'],
 
 				// web server port
 				port: 9876,
