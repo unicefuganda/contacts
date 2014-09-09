@@ -1,7 +1,13 @@
 var http = require("http");
 var url = require("url");
 
-function start() {
+var Server  =function() { };
+
+Server.add = function(a, b) {
+  return a + b;
+};
+
+Server.start = function () {
   function onRequest(request, response) {
     var pathname = url.parse(request.url).pathname;
     console.log("Request for " + pathname + " received.");
@@ -14,4 +20,4 @@ function start() {
   console.log("Server has started.");
 }
 
-exports.start = start;
+module.exports = Server;

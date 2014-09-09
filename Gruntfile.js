@@ -4,15 +4,21 @@ module.exports = function(grunt) {
 
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
-    karma: {
-      unit: {
-        configFile: 'karma.conf.js'
-      },
-      continuous: {
-         configFile: 'karma.conf.js',
-         singleRun: true,
-         browsers: ['PhantomJS']
-      }
+
+    banner: '/*! <%= pkg.name %> - v<%= pkg.version %> - ' +
+            '<%= grunt.template.today("yyyy-mm-dd") %>\n' +
+            '* Copyright (c) <%= grunt.template.today("yyyy") %> ',
+    env: {
+        dev: {
+              APP_ENV: 'dev'
+        }
+    },
+    jasmine_node: {
+        options: {
+        },
+        functional: ['spec/functional/'],
+        unit: ['spec/unit/'],
+        all: ['spec']
     },
     migrations: {
       path: "migrations",
@@ -22,5 +28,5 @@ module.exports = function(grunt) {
     }
   });
 
-  grunt.registerTask('default', ['karma']);
+  grunt.registerTask('default', ['jasmine_node:all']);
 };
