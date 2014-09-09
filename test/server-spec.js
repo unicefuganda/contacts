@@ -1,7 +1,9 @@
 'use strict';
 
 describe("Sample tests", function () {
-    beforeEach(module('server'));
+    beforeEach(function() {
+      var server  = require('../server.js');
+    });
 
 		it("Add gives the correct result", function () {
 				var num1 = 1;

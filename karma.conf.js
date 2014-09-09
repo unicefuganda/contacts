@@ -8,13 +8,13 @@ module.exports = function(config) {
 				frameworks: ['jasmine'],
 
 				// list of files / patterns to load in the browser
-				files: ['test/*.js', 'app/*.js'],
+				files: ['test/*.js'],
 
 				// list of files to exclude
 				exclude: ['karma.conf.js'],
 
 				// test results reporter to use
-				reporters: ['progress', 'coverage'],
+				reporters: ['progress'],
 
 				// web server port
 				port: 9876,
