@@ -5,6 +5,10 @@
   "main": "app/index.js",
   "author": "Thoughtworks Uganda",
   "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/unicefuganda/contacts.git"
+  },
   "scripts": {
     "start": "nodemon app/index.js"
   },
@@ -20,6 +24,9 @@
   "dependencies": {
     "nodemon": "*",
     "mongoose": "*",
-    "grunt-mongo-migrations": "^0.6.1"
+    "grunt-mongo-migrations": "^0.6.1",
+    "coveralls": "^2.11.1",
+    "istanbul": "^0.3.2",
+    "grunt-jasmine-node-coverage": "^0.1.11"
   }
 }

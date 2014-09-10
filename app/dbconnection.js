@@ -4,8 +4,8 @@ var DbConnection = function() { };
 
 DbConnection.schema = mongoose.Schema({ firstname: String,
                                           lastname: String,
-                                          phone: String,
-                                          createdOn: Date,
+                                          phone: { type: String, unique: true },
+                                          createdOn: { type: Date, 'default': Date.now },
                                           updatedOn: Date });
 
 DbConnection.save = function(mongodbUrl, contactDetails) {

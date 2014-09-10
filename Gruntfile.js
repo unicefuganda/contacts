@@ -14,7 +14,17 @@ module.exports = function(grunt) {
         }
     },
     jasmine_node: {
+        coverage: {
+
+        },
         options: {
+            forceExit: true,
+            captureExceptions: true,
+            junitreport: {
+              report: true,
+              savePath: "./reports/",
+              consolidated: true
+            }
         },
         functional: ['spec/functional/'],
         unit: ['spec/unit/'],
