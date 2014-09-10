@@ -1,23 +1,19 @@
-var http = require("http");
-var url = require("url");
+var express = require('express');
+var bodyParser = require('body-parser');
 
-var Server  =function() { };
+var app = express();
+var router = express.Router();
+var port = process.env.PORT || 8080;
 
-Server.add = function(a, b) {
-  return a + b;
-};
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
-Server.start = function () {
-  function onRequest(request, response) {
-    var pathname = url.parse(request.url).pathname;
-    console.log("Request for " + pathname + " received.");
-    response.writeHead(200, {"Content-Type": "text/plain"});
-    response.write("Hello World");
-    response.end();
-  }
 
-  http.createServer(onRequest).listen(9000);
-  console.log("Server has started.");
-}
+router.get('/', function(req, res) {
+  res.json({ message: 'hooray! welcome to our api!' });
+});
 
-module.exports = Server;
+app.use('/api', router);
+app.listen(port);
+
+console.log('Contacts service running ' + port);

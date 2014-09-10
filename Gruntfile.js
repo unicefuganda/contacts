@@ -10,7 +10,10 @@ module.exports = function(grunt) {
             '* Copyright (c) <%= grunt.template.today("yyyy") %> ',
     env: {
         dev: {
-              APP_ENV: 'dev'
+              NODE_ENV: 'dev'
+        },
+        test: {
+              NODE_ENV: 'test'
         }
     },
     jasmine_node: {
