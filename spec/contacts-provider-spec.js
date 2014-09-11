@@ -41,13 +41,13 @@ describe("ContactsProvider", function () {
       });
     });
 
-    it("should find contacts by phone number", function(done) {
+    it("should find ONE contact by phone number", function(done) {
       contacts = [{ firstname : "test", lastname : "user1", phone : "+254782443432" },
                   { firstname : "test1", lastname : "user2", phone : "+25477555555" }];
 
       contactsProvider.addAll(contacts, function() {
-        contactsProvider.find( { phone : "+25477555555" }, function(err, contacts) {
-          expect(contacts.length).toBe(1);
+        contactsProvider.findOne( { phone : "+25477555555" }, function(err, contact) {
+          expect(contact.phone).toEqual("+25477555555");
           done();
         });
       });

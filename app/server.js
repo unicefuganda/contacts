@@ -1,3 +1,4 @@
+var mongoose = require('mongoose');
 var ContactsProvider = require('../app/contacts-provider');
 var contactsProvider = new ContactsProvider();
 var express = require('express');
@@ -25,7 +26,16 @@ router.get('/contacts', function(req, res) {
   });
 });
 
+router.post('/contacts/add', function(req, res) {
+  contactsProvider.add({ firstname : req.param('firstname'), lastname : req.param('lastname'), phone :  req.param('phone')},
+     function(err, contact) {
+         res.json({ _id : contact._id.toString(), firstname : contact.firstname, lastname : contact.lastname, phone :  contact.phone });
+    });
+});
+
 app.use('/api', router);
 app.listen(port);
 
 console.log('Contacts service running ' + port);
+
+module.exports = app;
