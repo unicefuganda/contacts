@@ -4,7 +4,7 @@ var contactsProvider = new ContactsProvider('mongodb://localhost/unicefcontactst
 describe("ContactsProvider", function () {
 
     // REFACTOR: there must be a better way to do this
-    afterEach(function() {
+    beforeEach(function() {
         contactsProvider.deleteAll();
     });
 
@@ -14,6 +14,16 @@ describe("ContactsProvider", function () {
           expect(newContact._id).toBeDefined();
           expect(newContact.createdOn).toBeDefined();
           done();
+      });
+    });
+
+    it("should edit an existing contact", function(done) {
+      contactsProvider.add( { firstname : "test", lastname : "user1", phone : "+254782443432" }, function(err, addedContact) {
+        contactsProvider.edit(addedContact._id, { firstname : "test_edit", lastname : "user1", phone : "+254782443432" }, function(err, editedContact) {
+            expect(editedContact.firstname).toBe("test_edit");
+            expect(editedContact.lastname).toBe("user1");
+          done();
+        });
       });
     });
 

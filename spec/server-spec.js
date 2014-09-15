@@ -5,8 +5,8 @@ var contactsProvider = new ContactsProvider('mongodb://localhost/unicefcontactst
 
 describe('Server API', function () {
 
-    afterEach(function() {
-        contactsProvider.deleteAll();
+    beforeEach(function() {
+      contactsProvider.deleteAll();
     });
 
     describe('GET /api ', function() {
@@ -43,7 +43,7 @@ describe('Server API', function () {
 
     describe('POST /api/contacts/add ', function() {
 
-      it('responds with all contacts as json', function(done) {
+      it('responds with added contact as json', function(done) {
         var contact = { firstname : "test", lastname : "user1", phone : "+254782443432" };
 
         request(app)
@@ -58,6 +58,28 @@ describe('Server API', function () {
               expect(res.body._id).toBeDefined();
           })
           .expect(200, done);
+        });
+    });
+
+    describe('PUT /api/contacts/edit ', function() {
+
+      it('responds with edited contact as json if contact exists', function(done) {
+        var contact = { firstname : "test", lastname : "user1", phone : "+254782443432" };
+
+        contactsProvider.add(contact, function(err, addedContact) {
+          var edited_contact = { _id: addedContact._id, firstname : "test_edit", lastname : "user1", phone : "+254782443432" };
+
+          request(app)
+            .put('/api/contacts/edit')
+            .send(edited_contact)
+            .set('Accept', 'application/json')
+            .expect('Content-Type', /json/)
+            .expect(function(res) {
+                expect(res.body.firstname).toEqual("test_edit");
+                expect(res.body.lastname).toEqual("user1");
+            })
+            .expect(200, done);
+          });
         });
     });
 });

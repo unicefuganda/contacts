@@ -12,8 +12,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 router.use(function(req, res, next) {
-    console.log('received request at ' + Date.now());
-    next();
+  console.log('received request at ' + Date.now());
+  next();
 });
 
 router.get('/', function(req, res) {
@@ -29,7 +29,14 @@ router.get('/contacts', function(req, res) {
 router.post('/contacts/add', function(req, res) {
   contactsProvider.add({ firstname : req.param('firstname'), lastname : req.param('lastname'), phone :  req.param('phone')},
      function(err, contact) {
-         res.json({ _id : contact._id.toString(), firstname : contact.firstname, lastname : contact.lastname, phone :  contact.phone });
+      res.json({ _id : contact._id.toString(), firstname : contact.firstname, lastname : contact.lastname, phone :  contact.phone });
+    });
+});
+
+router.put('/contacts/edit', function(req, res) {
+  contactsProvider.edit(req.param('_id'), { firstname : req.param('firstname'), lastname : req.param('lastname'), phone :  req.param('phone')},
+     function(err, contact) {
+        res.json({ _id : contact._id.toString(), firstname : contact.firstname, lastname : contact.lastname, phone :  contact.phone });
     });
 });
 

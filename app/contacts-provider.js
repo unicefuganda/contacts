@@ -11,7 +11,7 @@ var Contact = mongoose.model('Contact', contactSchema);
 var ContactsProvider = function(dbURI) {
     if(mongoose.connection.readyState == 2) return;
 
-    var connectionURI = dbURI || 'mongodb://localhost/unicefcontacts'
+    var connectionURI = dbURI || 'mongodb://localhost/unicefcontacts';
 
     mongoose.connect(connectionURI);
 };
@@ -26,6 +26,12 @@ ContactsProvider.prototype.add = function(contactDetails, callback) {
 ContactsProvider.prototype.addAll = function(contacts, callback) {
   Contact.create(contacts, function (err) {
     callback();
+  });
+};
+
+ContactsProvider.prototype.edit = function(contact_id, contactDetails, callback) {
+  Contact.findByIdAndUpdate(contact_id, { $set: contactDetails }, function (err, updatedContact) {
+    callback( err, updatedContact);
   });
 };
 
