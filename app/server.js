@@ -1,6 +1,9 @@
 var mongoose = require('mongoose');
 var ContactsProvider = require('../app/contacts-provider');
+var PhoneValidator = require('../app/phone-validator');
+
 var contactsProvider = new ContactsProvider();
+
 var express = require('express');
 var bodyParser = require('body-parser');
 
@@ -27,17 +30,31 @@ router.get('/contacts', function(req, res) {
 });
 
 router.post('/contacts/add', function(req, res) {
-  contactsProvider.add({ firstname : req.param('firstname'), lastname : req.param('lastname'), phone :  req.param('phone')},
+  var phoneNumber = req.param('phone');
+  var phoneValidator = new PhoneValidator(phoneNumber);
+
+  phoneValidator.format(function(err, formattedNumber) {
+    if(err) return res.status(400).json(err);
+
+    contactsProvider.add({ firstname : req.param('firstname'), lastname : req.param('lastname'), phone :  formattedNumber},
      function(err, contact) {
       res.json({ _id : contact._id.toString(), firstname : contact.firstname, lastname : contact.lastname, phone :  contact.phone });
     });
+  });
 });
 
 router.put('/contacts/edit', function(req, res) {
-  contactsProvider.edit(req.param('_id'), { firstname : req.param('firstname'), lastname : req.param('lastname'), phone :  req.param('phone')},
+  var phoneNumber = req.param('phone');
+  var phoneValidator = new PhoneValidator(phoneNumber);
+
+  phoneValidator.format(function(err, formattedNumber) {
+    if(err) return res.status(400).json(err);
+
+    contactsProvider.edit(req.param('_id'), { firstname : req.param('firstname'), lastname : req.param('lastname'), phone :  formattedNumber},
      function(err, contact) {
-        res.json({ _id : contact._id.toString(), firstname : contact.firstname, lastname : contact.lastname, phone :  contact.phone });
+      res.json({ _id : contact._id.toString(), firstname : contact.firstname, lastname : contact.lastname, phone :  contact.phone });
     });
+  });
 });
 
 app.use('/api', router);

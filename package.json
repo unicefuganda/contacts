@@ -32,6 +32,6 @@
     "express": "~4.9.0",
     "body-parser": "~1.8.1",
     "supertest": "^0.13.0",
-    "phone": "^1.0.2"
+    "node-phonenumber": "^0.1.2"
   }
 }
