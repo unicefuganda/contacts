@@ -1,8 +1,5 @@
 var mongoose = require('mongoose');
-var ContactsProvider = require('../app/contacts-provider');
-var PhoneValidator = require('../app/phone-validator');
-
-var contactsProvider = new ContactsProvider();
+var ContactService = require('../app/contact-service');
 
 var express = require('express');
 var bodyParser = require('body-parser');
@@ -19,43 +16,13 @@ router.use(function(req, res, next) {
   next();
 });
 
-router.get('/', function(req, res) {
-  res.json({ message: 'UNICEF contacts service API' });
-});
+router.get('/', ContactService.welcomeMessage);
 
-router.get('/contacts', function(req, res) {
-  contactsProvider.findAll(function(err, contacts) {
-    res.json(contacts);
-  });
-});
+router.get('/contacts', ContactService.findAll);
 
-router.post('/contacts/add', function(req, res) {
-  var phoneNumber = req.param('phone');
-  var phoneValidator = new PhoneValidator(phoneNumber);
+router.post('/contacts/add', ContactService.add);
 
-  phoneValidator.format(function(err, formattedNumber) {
-    if(err) return res.status(400).json(err);
-
-    contactsProvider.add({ firstname : req.param('firstname'), lastname : req.param('lastname'), phone :  formattedNumber},
-     function(err, contact) {
-      res.json({ _id : contact._id.toString(), firstname : contact.firstname, lastname : contact.lastname, phone :  contact.phone });
-    });
-  });
-});
-
-router.put('/contacts/edit', function(req, res) {
-  var phoneNumber = req.param('phone');
-  var phoneValidator = new PhoneValidator(phoneNumber);
-
-  phoneValidator.format(function(err, formattedNumber) {
-    if(err) return res.status(400).json(err);
-
-    contactsProvider.edit(req.param('_id'), { firstname : req.param('firstname'), lastname : req.param('lastname'), phone :  formattedNumber},
-     function(err, contact) {
-      res.json({ _id : contact._id.toString(), firstname : contact.firstname, lastname : contact.lastname, phone :  contact.phone });
-    });
-  });
-});
+router.put('/contacts/edit', ContactService.edit);
 
 app.use('/api', router);
 app.listen(port);
