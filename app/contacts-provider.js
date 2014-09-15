@@ -8,16 +8,12 @@ var contactSchema = mongoose.Schema({ firstname: String,
 
 var Contact = mongoose.model('Contact', contactSchema);
 
-//REFACTOR: move this to an environment variable
 var ContactsProvider = function(dbURI) {
     if(mongoose.connection.readyState == 2) return;
 
-    if(dbURI) {
-        mongoose.connect(dbURI);
-    }
-    else {
-        mongoose.connect('mongodb://localhost/unicefcontacts');
-    }
+    var connectionURI = dbURI || 'mongodb://localhost/unicefcontacts'
+
+    mongoose.connect(connectionURI);
 };
 
 ContactsProvider.prototype.add = function(contactDetails, callback) {
