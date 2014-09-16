@@ -10,10 +10,10 @@ var Contact = mongoose.model('Contact', contactSchema);
 
 
 module.exports = function (dbURI) {
-    if (mongoose.connection.readyState == 2) return;
-
-    var connectionURI = dbURI || 'mongodb://localhost/unicefcontacts';
-    mongoose.connect(connectionURI);
+    if (mongoose.connection.readyState != 2) {
+        var connectionURI = dbURI || 'mongodb://localhost/unicefcontacts';
+        mongoose.connect(connectionURI);
+    }
 
     return {
         add: function (contactDetails, callback) {
