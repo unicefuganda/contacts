@@ -3,6 +3,14 @@ var contactsProvider = new ContactsProvider();
 var PhoneValidator = require('../app/phone-validator');
 
 module.exports = function () {
+
+    function formatPhoneNumber(phoneNumber, callback) {
+        var phoneValidator = new PhoneValidator(phoneNumber);
+        phoneValidator.format(function (err, formattedNumber) {
+            callback(err, formattedNumber);
+        });
+    }
+
     return {
 
         find: function(req, res) {
@@ -16,9 +24,8 @@ module.exports = function () {
 
         add: function (req, res) {
             var phoneNumber = req.param('phone');
-            var phoneValidator = new PhoneValidator(phoneNumber);
 
-            phoneValidator.format(function (err, formattedNumber) {
+            formatPhoneNumber(phoneNumber, function (err, formattedNumber) {
                 if (err) return res.status(400).json(err);
 
                 contactsProvider.add({ firstname: req.param('firstname'), lastname: req.param('lastname'), phone: formattedNumber},
@@ -30,9 +37,8 @@ module.exports = function () {
 
         edit: function (req, res) {
             var phoneNumber = req.param('phone');
-            var phoneValidator = new PhoneValidator(phoneNumber);
 
-            phoneValidator.format(function (err, formattedNumber) {
+            formatPhoneNumber(phoneNumber, function (err, formattedNumber) {
                 if (err) return res.status(400).json(err);
 
                 contactsProvider.edit(req.param('_id'), { firstname: req.param('firstname'), lastname: req.param('lastname'), phone: formattedNumber},

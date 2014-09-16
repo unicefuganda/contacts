@@ -12,9 +12,9 @@ var port = process.env.PORT || 8005;
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-router.use(function(req, res, next) {
-  console.log('received request at ' + Date.now());
-  next();
+router.use(function (req, res, next) {
+    console.log('received request at ' + Date.now());
+    next();
 });
 
 router.get('/', ContactService.welcomeMessage);
