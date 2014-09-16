@@ -1,5 +1,5 @@
 var mongoose = require('mongoose');
-var ContactService = require('../app/contact-service');
+var ContactService = require('../app/contact-service')();
 
 var express = require('express');
 var bodyParser = require('body-parser');
@@ -15,7 +15,6 @@ router.use(function(req, res, next) {
   console.log('received request at ' + Date.now());
   next();
 });
-
 router.get('/', ContactService.welcomeMessage);
 
 router.get('/contacts', ContactService.findAll);
