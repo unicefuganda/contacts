@@ -4,8 +4,12 @@ var PhoneValidator = require('../app/phone-validator');
 
 module.exports = function () {
     return {
-        findAll: function (req, res) {
-            contactsProvider.findAll(function (err, contacts) {
+
+        find: function(req, res) {
+            if (req.query.searchfield == undefined || req.query.searchfield == '')
+                return res.status(400).json({ error : 'No searchfield querystring given' });
+
+            contactsProvider.find(req.query.searchfield, function(err, contacts) {
                 res.json(contacts);
             });
         },
@@ -43,4 +47,3 @@ module.exports = function () {
         }
     }
 };
-

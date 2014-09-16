@@ -21,27 +21,52 @@ describe('Server API', function () {
         });
     });
 
-    describe('GET /api/contacts ', function () {
+    describe('GET /api/contacts?searchfield="value"', function() {
 
-        it('responds with all contacts as json', function (done) {
-            var contacts = [
-                { firstname: "test", lastname: "user1", phone: "+254 782 443432" },
-                { firstname: "test", lastname: "user2", phone: "+254 782 443431" }
-            ];
+      it('responds with an ERROR when "searchfield" querystring is NOT defined', function(done) {
+        var contacts = [{ firstname : "test", lastname : "user1", phone : "+254 782 443432" },
+                        { firstname : "test", lastname : "user12", phone : "+254 782 443431" }];
 
-            contactsProvider.addAll(contacts, function () {
-                contactsProvider.findAll(function (err, allContacts) {
-                    request(app)
-                        .get('/api/contacts')
-                        .set('Accept', 'application/json')
-                        .expect('Content-Type', /json/)
-                        .expect([
-                            { "_id": allContacts[0]._id.toString(), "firstname": "test", "lastname": "user1", "phone": "+254 782 443432" },
-                            { "_id": allContacts[1]._id.toString(), "firstname": "test", "lastname": "user2", "phone": "+254 782 443431" }
-                        ])
-                        .expect(200, done);
-                });
+        contactsProvider.addAll(contacts, function() {
+            request(app)
+              .get('/api/contacts')
+              .set('Accept', 'application/json')
+              .expect('Content-Type', /json/)
+              .expect({ error : 'No searchfield querystring given' })
+              .expect(400, done);
+          });
+        });
+
+      it('responds with an ERROR when "searchfield" querystring is defined but is EMPTY', function(done) {
+        var contacts = [{ firstname : "test", lastname : "user1", phone : "+254 782 443432" },
+                        { firstname : "test", lastname : "user12", phone : "+254 782 443431" }];
+
+        contactsProvider.addAll(contacts, function() {
+            request(app)
+              .get('/api/contacts?searchfield')
+              .set('Accept', 'application/json')
+              .expect('Content-Type', /json/)
+              .expect({ error : 'No searchfield querystring given' })
+              .expect(400, done);
+          });
+        });
+
+      it('responds with all matching contacts as json', function(done) {
+        var contacts = [{ firstname : "test", lastname : "user1", phone : "+254 782 443432" },
+                        { firstname : "test", lastname : "last1", phone : "+254 782 443492" },
+                        { firstname : "test", lastname : "user12", phone : "+254 782 443431" }];
+
+        contactsProvider.addAll(contacts, function() {
+            contactsProvider.findAll(function(err, allContacts) {
+                request(app)
+                  .get('/api/contacts?searchfield=user')
+                  .set('Accept', 'application/json')
+                  .expect('Content-Type', /json/)
+                  .expect([{ "_id" : allContacts[0]._id.toString(), "firstname" : "test", "lastname" : "user1", "phone" : "+254 782 443432" },
+                          { "_id" : allContacts[2]._id.toString(), "firstname" : "test", "lastname" : "user12", "phone" : "+254 782 443431" }])
+                  .expect(200, done);
             });
+          });
         });
     });
 

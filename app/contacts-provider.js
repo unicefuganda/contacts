@@ -1,4 +1,5 @@
 var mongoose = require('mongoose');
+RegExp.quote = require("regexp-quote");
 
 var contactSchema = mongoose.Schema({ firstname: String,
     lastname: String,
@@ -11,8 +12,8 @@ var Contact = mongoose.model('Contact', contactSchema);
 
 module.exports = function (dbURI) {
     if (mongoose.connection.readyState != 2) {
-        var connectionURI = dbURI || 'mongodb://localhost/unicefcontacts';
-        mongoose.connect(connectionURI);
+	    var connectionURI = dbURI || 'mongodb://localhost/unicefcontacts';
+	    mongoose.connect(connectionURI);
     }
 
     return {
@@ -44,9 +45,14 @@ module.exports = function (dbURI) {
         },
 
         find: function (matcher, callback) {
-            Contact.find(matcher, function (err, contacts) {
-                callback(err, contacts);
-            });
+            var regexMatcher = new RegExp(RegExp.quote(matcher), 'i');
+
+            Contact.find()
+              .select('firstname lastname phone')
+              .or([{ firstname: regexMatcher }, { lastname: regexMatcher }, { phone: regexMatcher }])
+              .exec(function (err, contacts) {
+                callback( err, contacts);
+              });
         },
 
         findOne: function (matcher, callback) {
@@ -59,6 +65,5 @@ module.exports = function (dbURI) {
             Contact.remove({ }, function (err) {
             });
         }
-
     }
 };

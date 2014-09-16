@@ -39,27 +39,40 @@ describe("ContactsProvider", function () {
       });
     });
 
-    it("should find contacts by name", function(done) {
-      contacts = [{ firstname : "test", lastname : "user1", phone : "+254782443432" },
-                  { firstname : "test1", lastname : "user2", phone : "+254782443431" }];
+    it("should find contacts by firstname", function(done) {
+      contacts = [{ firstname : "test", lastname : "user1", phone : "+254 782 443432" },
+                  { firstname : "test1", lastname : "user2", phone : "+254 782 443431" }];
 
       contactsProvider.addAll(contacts, function() {
-        contactsProvider.find( { firstname: 'test1' }, function(err, contacts) {
+        contactsProvider.find('Test', function(err, contacts) {
+          expect(contacts.length).toBe(2);
+          done();
+        });
+      });
+    });
+
+    it("should find contact by phone number", function(done) {
+      contacts = [{ firstname : "test", lastname : "user1", phone : "+254 782 443432" },
+                  { firstname : "test1", lastname : "user2", phone : "+254 775 55555" }];
+
+      contactsProvider.addAll(contacts, function() {
+        contactsProvider.find("+254 775 55555", function(err, contacts) {
+          expect(contacts[0].phone).toEqual("+254 775 55555");
+          done();
+        });
+      });
+    });
+
+    it("should find contacts by lastname", function(done) {
+      contacts = [{ firstname : "test", lastname : "user1", phone : "+254 782 443432" },
+                  { firstname : "test1", lastname : "user3", phone : "+254 782 422431" }];
+
+      contactsProvider.addAll(contacts, function() {
+        contactsProvider.find('Ser3' , function(err, contacts) {
           expect(contacts.length).toBe(1);
           done();
         });
       });
     });
 
-    it("should find ONE contact by phone number", function(done) {
-      contacts = [{ firstname : "test", lastname : "user1", phone : "+254782443432" },
-                  { firstname : "test1", lastname : "user2", phone : "+25477555555" }];
-
-      contactsProvider.addAll(contacts, function() {
-        contactsProvider.findOne( { phone : "+25477555555" }, function(err, contact) {
-          expect(contact.phone).toEqual("+25477555555");
-          done();
-        });
-      });
-    });
 });

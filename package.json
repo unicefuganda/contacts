@@ -32,6 +32,8 @@
     "express": "~4.9.0",
     "body-parser": "~1.8.1",
     "supertest": "^0.13.0",
-    "node-phonenumber": "^0.1.2"
+    "node-phonenumber": "^0.1.2",
+    "mongoose-text-search": "0.0.2",
+    "regexp-quote": "0.0.0"
   }
 }

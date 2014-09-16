@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
-var ContactService = require('../app/contact-service')();
+var ContactService = new require('../app/contacts-service')();
+
 
 var express = require('express');
 var bodyParser = require('body-parser');
@@ -15,15 +16,17 @@ router.use(function(req, res, next) {
   console.log('received request at ' + Date.now());
   next();
 });
+
 router.get('/', ContactService.welcomeMessage);
 
-router.get('/contacts', ContactService.findAll);
+router.get('/contacts', ContactService.find);
 
 router.post('/contacts/add', ContactService.add);
 
 router.put('/contacts/edit', ContactService.edit);
 
 app.use('/api', router);
+
 app.listen(port);
 
 console.log('Contacts service running ' + port);
