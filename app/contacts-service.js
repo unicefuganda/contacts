@@ -24,7 +24,6 @@ module.exports = function () {
 
         add: function (req, res) {
             var phoneNumber = req.param('phone');
-
             formatPhoneNumber(phoneNumber, function (err, formattedNumber) {
                 if (err) return res.status(400).json(err);
 
@@ -37,7 +36,6 @@ module.exports = function () {
 
         edit: function (req, res) {
             var phoneNumber = req.param('phone');
-
             formatPhoneNumber(phoneNumber, function (err, formattedNumber) {
                 if (err) return res.status(400).json(err);
 
