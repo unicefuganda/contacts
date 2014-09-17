@@ -1,5 +1,5 @@
 var mongoose = require('mongoose');
-var ContactService = new require('../app/contacts-service')();
+var ContactService = require('../app/contacts-service')();
 
 
 var express = require('express');
