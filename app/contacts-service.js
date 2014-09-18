@@ -22,6 +22,15 @@ module.exports = function () {
             });
         },
 
+        findById: function(req, res) {
+          var contactId = req.param('id');
+          contactsProvider.findById(contactId, function(err, contact) {
+            if (err || contact == null) return res.status(404).json({error: 'Contact not found'});
+
+            res.json(contact);
+          });
+        },
+
         add: function (req, res) {
             var phoneNumber = req.param('phone');
             formatPhoneNumber(phoneNumber, function (err, formattedNumber) {

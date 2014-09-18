@@ -55,10 +55,12 @@ module.exports = function (dbURI) {
               });
         },
 
-        findOne: function (matcher, callback) {
-            Contact.findOne(matcher, function (err, contact) {
-                callback(err, contact);
-            });
+        findById: function(contactId, callback) {
+        	Contact.findById(contactId)
+	        	.select('firstname lastname phone')
+	        	.exec(function(err, contact) {
+	        		callback(err, contact);
+	        	});
         },
 
         deleteAll: function () {

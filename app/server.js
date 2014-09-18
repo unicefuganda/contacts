@@ -21,6 +21,8 @@ router.get('/', ContactService.welcomeMessage);
 
 router.get('/contacts', ContactService.find);
 
+router.get('/contacts/:id', ContactService.findById);
+
 router.post('/contacts/add', ContactService.add);
 
 router.put('/contacts/edit', ContactService.edit);

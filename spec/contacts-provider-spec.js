@@ -75,4 +75,16 @@ describe("ContactsProvider", function () {
       });
     });
 
+    it("should find contact by id", function(done) {
+      contact = { firstname : "test", lastname : "user1", phone : "+254 782 443436" };
+
+      contactsProvider.add(contact, function(err, addedContact) {
+        contactsProvider.findById(addedContact._id , function(err, foundContact) {
+          expect(foundContact._id).toEqual(addedContact._id);
+          done();
+        });
+      });
+    });
+
+
 });

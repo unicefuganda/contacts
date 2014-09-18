@@ -70,6 +70,31 @@ describe('Server API', function () {
         });
     });
 
+    describe('GET /api/contacts/:id', function() {
+      it('responds with an error when id given does nto match any contacts', function(done) {
+        var contact = { firstname: "test", lastname: "user1", phone: "+256 782 443432" };
+
+        contactsProvider.add(contact, function(err, addedContact) {
+          request(app)
+            .get('/api/contacts/' + "1")
+            .expect('Content-Type', /json/)
+            .expect({"error": "Contact not found"})
+            .expect(404, done);
+        });
+      });
+
+      it('gets a contact by id', function(done) {
+        var contact = { firstname: "test", lastname: "user1", phone: "+256 782 443432" };
+        contactsProvider.add(contact, function(err, addedContact) {
+          request(app)
+            .get('/api/contacts/' + addedContact._id)
+            .expect('Content-Type', /json/)
+            .expect({"_id" : addedContact._id.toString(), "firstname" : "test", "lastname" : "user1", "phone" : "+256 782 443432"})
+            .expect(200, done);
+        });
+      });
+    });
+
     describe('POST /api/contacts/add ', function () {
 
         it('responds with added contact as json', function (done) {
