@@ -3,6 +3,8 @@ contacts
 
 [![Build Status](https://snap-ci.com/unicefuganda/contacts/branch/master/build_image)](https://snap-ci.com/unicefuganda/contacts/branch/master)
 
+[![Coverage Status](https://img.shields.io/coveralls/unicefuganda/contacts.svg)](https://coveralls.io/r/unicefuganda/contacts)
+
 Cross cutting contacts service for UNICEF Uganda. Currently used for th UNICEF End User Monitoring Tool
 
 Developer Setup
