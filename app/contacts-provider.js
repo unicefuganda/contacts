@@ -1,8 +1,8 @@
 var mongoose = require('mongoose');
 RegExp.quote = require("regexp-quote");
 
-var contactSchema = mongoose.Schema({ firstname: String,
-    lastname: String,
+var contactSchema = mongoose.Schema({ firstName: String,
+    lastName: String,
     phone: { type: String, unique: true },
     createdOn: { type: Date, 'default': Date.now },
     updatedOn: Date });
@@ -38,7 +38,7 @@ module.exports = function (dbURI) {
 
         findAll: function (callback) {
             Contact.find({ })
-                .select('firstname lastname phone')
+                .select('firstName lastName phone')
                 .exec(function (err, contacts) {
                     callback(err, contacts);
                 });
@@ -48,8 +48,8 @@ module.exports = function (dbURI) {
             var regexMatcher = new RegExp(RegExp.quote(matcher), 'i');
 
             Contact.find()
-              .select('firstname lastname phone')
-              .or([{ firstname: regexMatcher }, { lastname: regexMatcher }, { phone: regexMatcher }])
+              .select('firstName lastName phone')
+              .or([{ firstName: regexMatcher }, { lastName: regexMatcher }, { phone: regexMatcher }])
               .exec(function (err, contacts) {
                 callback( err, contacts);
               });
@@ -57,7 +57,7 @@ module.exports = function (dbURI) {
 
         findById: function(contactId, callback) {
         	Contact.findById(contactId)
-	        	.select('firstname lastname phone')
+	        	.select('firstName lastName phone')
 	        	.exec(function(err, contact) {
 	        		callback(err, contact);
 	        	});

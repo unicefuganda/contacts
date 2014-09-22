@@ -41,12 +41,12 @@ module.exports = function () {
                         return res.status(400).json({error: "Contact with this phone number already exists"});
                     }
 
-                    var contactDetails = {firstname: req.param('firstname'), lastname: req.param('lastname'), phone: formattedNumber};
+                    var contactDetails = {firstName: req.param('firstName'), lastName: req.param('lastName'), phone: formattedNumber};
 
                     contactsProvider.add(contactDetails, function (err, contact) {
                         res.json({
-                            _id: contact._id.toString(), firstname: contact.firstname,
-                            lastname: contact.lastname, phone: contact.phone
+                            _id: contact._id.toString(), firstName: contact.firstName,
+                            lastName: contact.lastName, phone: contact.phone
                         });
                     });
                 });
@@ -59,9 +59,9 @@ module.exports = function () {
             formatPhoneNumber(phoneNumber, function (err, formattedNumber) {
                 if (err) return res.status(400).json(err);
 
-                contactsProvider.edit(req.param('_id'), { firstname: req.param('firstname'), lastname: req.param('lastname'), phone: formattedNumber},
+                contactsProvider.edit(req.param('_id'), { firstName: req.param('firstName'), lastName: req.param('lastName'), phone: formattedNumber},
                     function (err, contact) {
-                        res.json({ _id: contact._id.toString(), firstname: contact.firstname, lastname: contact.lastname, phone: contact.phone });
+                        res.json({ _id: contact._id.toString(), firstName: contact.firstName, lastName: contact.lastName, phone: contact.phone });
                     });
             });
         },
