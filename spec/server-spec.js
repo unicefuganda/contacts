@@ -71,7 +71,7 @@ describe('Server API', function () {
     });
 
     describe('GET /api/contacts/:id/', function() {
-      it('responds with an error when id given does not match any contacts', function(done) {
+      it('responds with an error when id given does nto match any contacts', function(done) {
         var contact = { firstname: "test", lastname: "user1", phone: "+256 782 443432" };
 
         contactsProvider.add(contact, function(err, addedContact) {
@@ -87,7 +87,7 @@ describe('Server API', function () {
         var contact = { firstname: "test", lastname: "user1", phone: "+256 782 443432" };
         contactsProvider.add(contact, function(err, addedContact) {
           request(app)
-            .get('/api/contacts/' + addedContact._id + '/')
+            .get('/api/contacts/' + addedContact._id)
             .expect('Content-Type', /json/)
             .expect({"_id" : addedContact._id.toString(), "firstname" : "test", "lastname" : "user1", "phone" : "+256 782 443432"})
             .expect(200, done);
