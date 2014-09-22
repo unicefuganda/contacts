@@ -1,4 +1,3 @@
-var mongoose = require('mongoose');
 var ContactService = require('../app/contacts-service')();
 
 
@@ -19,13 +18,13 @@ router.use(function (req, res, next) {
 
 router.get('/', ContactService.welcomeMessage);
 
-router.get('/contacts', ContactService.find);
+router.get('/contacts/', ContactService.find);
 
 router.get('/contacts/:id', ContactService.findById);
 
-router.post('/contacts/add', ContactService.add);
+router.post('/contacts/', ContactService.add);
 
-router.put('/contacts/edit', ContactService.edit);
+router.put('/contacts/', ContactService.edit);
 
 app.use('/api', router);
 

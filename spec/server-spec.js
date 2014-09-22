@@ -95,13 +95,13 @@ describe('Server API', function () {
       });
     });
 
-    describe('POST /api/contacts/add ', function () {
+    describe('POST /api/contacts/ ', function () {
 
         it('responds with added contact as json', function (done) {
             var contact = { firstname: "test", lastname: "user1", phone: "+256 782 443432" };
 
             request(app)
-                .post('/api/contacts/add')
+                .post('/api/contacts/')
                 .send(contact)
                 .set('Accept', 'application/json')
                 .expect('Content-Type', /json/)
@@ -118,7 +118,7 @@ describe('Server API', function () {
             var contact = { firstname: "test", lastname: "user1", phone: "+256 782 44323" };
 
             request(app)
-                .post('/api/contacts/add')
+                .post('/api/contacts/')
                 .send(contact)
                 .set('Accept', 'application/json')
                 .expect('Content-Type', /json/)
@@ -129,7 +129,7 @@ describe('Server API', function () {
         });
     });
 
-    describe('PUT /api/contacts/edit ', function () {
+    describe('PUT /api/contacts/ ', function () {
 
         it('responds with edited contact as json if contact exists', function (done) {
             var contact = { firstname: "test", lastname: "user1", phone: "+254 782 443432" };
@@ -138,7 +138,7 @@ describe('Server API', function () {
                 var edited_contact = { _id: addedContact._id, firstname: "test_edit", lastname: "user1", phone: "+254701443432" };
 
                 request(app)
-                    .put('/api/contacts/edit')
+                    .put('/api/contacts/')
                     .send(edited_contact)
                     .set('Accept', 'application/json')
                     .expect('Content-Type', /json/)
@@ -158,7 +158,7 @@ describe('Server API', function () {
                 var edited_contact = { _id: addedContact._id, firstname: "test_edit", lastname: "user1", phone: "+25470143432" };
 
                 request(app)
-                    .put('/api/contacts/edit')
+                    .put('/api/contacts/')
                     .send(edited_contact)
                     .set('Accept', 'application/json')
                     .expect('Content-Type', /json/)
