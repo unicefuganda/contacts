@@ -70,13 +70,13 @@ describe('Server API', function () {
         });
     });
 
-    describe('GET /api/contacts/:id', function() {
+    describe('GET /api/contacts/:id/', function() {
       it('responds with an error when id given does nto match any contacts', function(done) {
         var contact = { firstname: "test", lastname: "user1", phone: "+256 782 443432" };
 
         contactsProvider.add(contact, function(err, addedContact) {
           request(app)
-            .get('/api/contacts/' + "1")
+            .get('/api/contacts/' + '1' + '/')
             .expect('Content-Type', /json/)
             .expect({"error": "Contact not found"})
             .expect(404, done);

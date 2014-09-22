@@ -20,7 +20,7 @@ router.get('/', ContactService.welcomeMessage);
 
 router.get('/contacts/', ContactService.find);
 
-router.get('/contacts/:id', ContactService.findById);
+router.get('/contacts/:id/', ContactService.findById);
 
 router.post('/contacts/', ContactService.add);
 
