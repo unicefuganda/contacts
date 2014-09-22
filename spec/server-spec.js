@@ -21,84 +21,92 @@ describe('Server API', function () {
         });
     });
 
-    describe('GET /api/contacts?searchfield="value"', function() {
+    describe('GET /api/contacts?searchfield="value"', function () {
 
-      it('responds with an ERROR when "searchfield" querystring is NOT defined', function(done) {
-        var contacts = [{ firstname : "test", lastname : "user1", phone : "+254 782 443432" },
-                        { firstname : "test", lastname : "user12", phone : "+254 782 443431" }];
+        it('responds with an ERROR when "searchfield" querystring is NOT defined', function (done) {
+            var contacts = [
+                { firstname: "test", lastname: "user1", phone: "+254 782 443432" },
+                { firstname: "test", lastname: "user12", phone: "+254 782 443431" }
+            ];
 
-        contactsProvider.addAll(contacts, function() {
-            request(app)
-              .get('/api/contacts')
-              .set('Accept', 'application/json')
-              .expect('Content-Type', /json/)
-              .expect({ error : 'No searchfield querystring given' })
-              .expect(400, done);
-          });
-        });
-
-      it('responds with an ERROR when "searchfield" querystring is defined but is EMPTY', function(done) {
-        var contacts = [{ firstname : "test", lastname : "user1", phone : "+254 782 443432" },
-                        { firstname : "test", lastname : "user12", phone : "+254 782 443431" }];
-
-        contactsProvider.addAll(contacts, function() {
-            request(app)
-              .get('/api/contacts?searchfield')
-              .set('Accept', 'application/json')
-              .expect('Content-Type', /json/)
-              .expect({ error : 'No searchfield querystring given' })
-              .expect(400, done);
-          });
-        });
-
-      it('responds with all matching contacts as json', function(done) {
-        var contacts = [{ firstname : "test", lastname : "user1", phone : "+254 782 443432" },
-                        { firstname : "test", lastname : "last1", phone : "+254 782 443492" },
-                        { firstname : "test", lastname : "user12", phone : "+254 782 443431" }];
-
-        contactsProvider.addAll(contacts, function() {
-            contactsProvider.findAll(function(err, allContacts) {
+            contactsProvider.addAll(contacts, function () {
                 request(app)
-                  .get('/api/contacts?searchfield=user')
-                  .set('Accept', 'application/json')
-                  .expect('Content-Type', /json/)
-                  .expect([{ "_id" : allContacts[0]._id.toString(), "firstname" : "test", "lastname" : "user1", "phone" : "+254 782 443432" },
-                          { "_id" : allContacts[2]._id.toString(), "firstname" : "test", "lastname" : "user12", "phone" : "+254 782 443431" }])
-                  .expect(200, done);
+                    .get('/api/contacts')
+                    .set('Accept', 'application/json')
+                    .expect('Content-Type', /json/)
+                    .expect({ error: 'No searchfield querystring given' })
+                    .expect(400, done);
             });
-          });
+        });
+
+        it('responds with an ERROR when "searchfield" querystring is defined but is EMPTY', function (done) {
+            var contacts = [
+                { firstname: "test", lastname: "user1", phone: "+254 782 443432" },
+                { firstname: "test", lastname: "user12", phone: "+254 782 443431" }
+            ];
+
+            contactsProvider.addAll(contacts, function () {
+                request(app)
+                    .get('/api/contacts?searchfield')
+                    .set('Accept', 'application/json')
+                    .expect('Content-Type', /json/)
+                    .expect({ error: 'No searchfield querystring given' })
+                    .expect(400, done);
+            });
+        });
+
+        it('responds with all matching contacts as json', function (done) {
+            var contacts = [
+                { firstname: "test", lastname: "user1", phone: "+254 782 443432" },
+                { firstname: "test", lastname: "last1", phone: "+254 782 443492" },
+                { firstname: "test", lastname: "user12", phone: "+254 782 443431" }
+            ];
+
+            contactsProvider.addAll(contacts, function () {
+                contactsProvider.findAll(function (err, allContacts) {
+                    request(app)
+                        .get('/api/contacts?searchfield=user')
+                        .set('Accept', 'application/json')
+                        .expect('Content-Type', /json/)
+                        .expect([
+                            { "_id": allContacts[0]._id.toString(), "firstname": "test", "lastname": "user1", "phone": "+254 782 443432" },
+                            { "_id": allContacts[2]._id.toString(), "firstname": "test", "lastname": "user12", "phone": "+254 782 443431" }
+                        ])
+                        .expect(200, done);
+                });
+            });
         });
     });
 
-    describe('GET /api/contacts/:id', function() {
-      it('responds with an error when id given does nto match any contacts', function(done) {
-        var contact = { firstname: "test", lastname: "user1", phone: "+256 782 443432" };
+    describe('GET /api/contacts/:id', function () {
+        it('responds with an error when id given does nto match any contacts', function (done) {
+            var contact = { firstname: "test", lastname: "user1", phone: "+256 782 443432" };
 
-        contactsProvider.add(contact, function(err, addedContact) {
-          request(app)
-            .get('/api/contacts/' + "1")
-            .expect('Content-Type', /json/)
-            .expect({"error": "Contact not found"})
-            .expect(404, done);
+            contactsProvider.add(contact, function (err, addedContact) {
+                request(app)
+                    .get('/api/contacts/' + "1")
+                    .expect('Content-Type', /json/)
+                    .expect({"error": "Contact not found"})
+                    .expect(404, done);
+            });
         });
-      });
 
-      it('gets a contact by id', function(done) {
-        var contact = { firstname: "test", lastname: "user1", phone: "+256 782 443432" };
-        contactsProvider.add(contact, function(err, addedContact) {
-          request(app)
-            .get('/api/contacts/' + addedContact._id)
-            .expect('Content-Type', /json/)
-            .expect({"_id" : addedContact._id.toString(), "firstname" : "test", "lastname" : "user1", "phone" : "+256 782 443432"})
-            .expect(200, done);
+        it('gets a contact by id', function (done) {
+            var contact = { firstname: "test", lastname: "user1", phone: "+256 782 443432" };
+            contactsProvider.add(contact, function (err, addedContact) {
+                request(app)
+                    .get('/api/contacts/' + addedContact._id)
+                    .expect('Content-Type', /json/)
+                    .expect({"_id": addedContact._id.toString(), "firstname": "test", "lastname": "user1", "phone": "+256 782 443432"})
+                    .expect(200, done);
+            });
         });
-      });
     });
 
     describe('POST /api/contacts/ ', function () {
 
         it('responds with added contact as json', function (done) {
-            var contact = { firstname: "test", lastname: "user1", phone: "+256 782 443432" };
+            var contact = { firstname: "test", lastname: "user1", phone: "+256 782 434332" };
 
             request(app)
                 .post('/api/contacts/')
@@ -108,7 +116,7 @@ describe('Server API', function () {
                 .expect(function (res) {
                     expect(res.body.firstname).toEqual("test");
                     expect(res.body.lastname).toEqual("user1");
-                    expect(res.body.phone).toEqual("+256 782 443432");
+                    expect(res.body.phone).toEqual("+256 782 434332");
                     expect(res.body._id).toBeDefined();
                 })
                 .expect(200, done);
@@ -126,6 +134,22 @@ describe('Server API', function () {
                     expect(res.body.error).toEqual("Phone number format is wrong");
                 })
                 .expect(400, done);
+        });
+
+        it('responds with an error message when a contact with the same phone number exists', function (done) {
+            var contact = { firstname: "test", lastname: "user1", phone: "+256 782 444323" };
+
+            contactsProvider.add(contact, function () {
+                request(app)
+                    .post('/api/contacts/')
+                    .send(contact)
+                    .set('Accept', 'application/json')
+                    .expect('Content-Type', /json/)
+                    .expect(function (res) {
+                        expect(res.body.error).toEqual("Contact with this phone number already exists");
+                    })
+                    .expect(400, done);
+            });
         });
     });
 

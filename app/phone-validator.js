@@ -4,18 +4,21 @@ module.exports = function (phoneNumber) {
     var parsedPhoneNumber;
     var phoneUtil = phoneLib.PhoneNumberUtil.getInstance();
 
+    var isValid = function () {
+        try {
+            parsedPhoneNumber = phoneUtil.parse(phoneNumber);
+            return phoneUtil.isValidNumber(parsedPhoneNumber);
+        }
+        catch(ex) {
+            console.log(ex);
+            return false;
+        }
+    };
+
     return {
-        isValid: function () {
-            try {
-                parsedPhoneNumber = phoneUtil.parse(phoneNumber);
-                return phoneUtil.isValidNumber(parsedPhoneNumber);
-            }
-            catch (formatException) {
-                return false;
-            }
-        },
+
         format: function (callback) {
-            if (!this.isValid()) return callback({ error: 'Phone number format is wrong' });
+            if (!isValid()) return callback({ error: 'Phone number format is wrong' });
             return callback(null, phoneUtil.format(parsedPhoneNumber, phoneLib.PhoneNumberFormat.INTERNATIONAL));
         }
     }
