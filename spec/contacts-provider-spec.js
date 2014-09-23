@@ -56,8 +56,8 @@ describe("ContactsProvider", function () {
                   { firstName : "test1", lastName : "user2", phone : "+254 775 55555" }];
 
       contactsProvider.addAll(contacts, function() {
-        contactsProvider.find("+254 775 55555", function(err, contacts) {
-          expect(contacts[0].phone).toEqual("+254 775 55555");
+        contactsProvider.find("+254 775 55555", function(err, contact) {
+          expect(contact[0].phone).toEqual("+254 775 55555");
           done();
         });
       });

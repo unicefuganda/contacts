@@ -68,10 +68,9 @@ describe('Server API', function () {
                         .get('/api/contacts?searchfield=user')
                         .set('Accept', 'application/json')
                         .expect('Content-Type', /json/)
-                        .expect([
-                            { "_id": allContacts[0]._id.toString(), "firstName": "test", "lastName": "user1", "phone": "+254 782 443432" },
-                            { "_id": allContacts[2]._id.toString(), "firstName": "test", "lastName": "user12", "phone": "+254 782 443431" }
-                        ])
+                        .expect(function(response){
+                            expect(response.body.length).toEqual(2)
+                        })
                         .expect(200, done);
                 });
             });
