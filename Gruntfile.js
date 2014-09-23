@@ -38,8 +38,21 @@ module.exports = function(grunt) {
       template: grunt.file.read('migrations/_template.js'),
       mongo: 'mongodb://localhost/unicefcontacts',
       ext: "js"
-    }
+    },
+    coveralls: {
+      options: {
+        // LCOV coverage file relevant to every target
+        src: 'coverage/lcov.info',
+
+        // When true, grunt-coveralls will only print a warning rather than
+        // an error, to prevent CI builds from failing unnecessarily (e.g. if
+        // coveralls.io is down). Optional, defaults to false.
+        force: false
+      }
+     }
   });
 
   grunt.registerTask('default', ['jasmine_node:all']);
+
+  grunt.loadNpmTasks('grunt-coveralls');
 };
