@@ -48,6 +48,10 @@ module.exports = function(grunt) {
         // an error, to prevent CI builds from failing unnecessarily (e.g. if
         // coveralls.io is down). Optional, defaults to false.
         force: false
+      },
+      your_target: {
+        // Target-specific LCOV coverage file
+        src: 'coverage/lcov.info'
       }
      }
   });
