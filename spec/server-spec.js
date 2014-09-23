@@ -5,7 +5,7 @@ var contactsProvider = new ContactsProvider('mongodb://localhost/unicefcontactst
 
 describe('Server API', function () {
 
-    beforeEach(function () {
+    afterEach(function () {
         contactsProvider.deleteAll();
     });
 

@@ -4,7 +4,7 @@ var contactsProvider = new ContactsProvider('mongodb://localhost/unicefcontactst
 describe("ContactsProvider", function () {
 
     // REFACTOR: there must be a better way to do this
-    beforeEach(function() {
+    afterEach(function() {
         contactsProvider.deleteAll();
     });
 
