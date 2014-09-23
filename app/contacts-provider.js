@@ -47,8 +47,8 @@ module.exports = function (dbURI) {
         find: function (matcher, callback) {
             var regexMatcher = new RegExp(RegExp.quote(matcher), 'i');
             Contact.find()
-              .select('firstname lastname phone')
-              .or([{ firstname: regexMatcher }, { lastname: regexMatcher }, { phone: regexMatcher }])
+              .select('firstName lastName phone')
+              .or([{ firstName: regexMatcher }, { lastName: regexMatcher }, { phone: regexMatcher }])
               .exec(function (err, contacts) {
                 callback( err, contacts);
               });
@@ -56,7 +56,7 @@ module.exports = function (dbURI) {
 
         findById: function(contactId, callback) {
         	Contact.findById(contactId)
-	        	.select('firstname lastname phone')
+	        	.select('firstName lastName phone')
 	        	.exec(function(err, contact) {
 	        		callback(err, contact);
 	        	});
