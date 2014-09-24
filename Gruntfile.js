@@ -49,7 +49,7 @@ module.exports = function(grunt) {
         // coveralls.io is down). Optional, defaults to false.
         force: false
       },
-      your_target: {
+      grunt_coveralls_coverage: {
         // Target-specific LCOV coverage file
         src: 'coverage/lcov.info'
       }
