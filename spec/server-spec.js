@@ -9,12 +9,25 @@ describe('Server API', function () {
         contactsProvider.deleteAll();
     });
 
+    describe('/api/*', function () {
+        it('allows cross origin requests from localhost', function (done) {
+            request(app)
+                .get('/api/')
+                .set('Accept', 'application/json')
+                .expect(function (response) {
+                    var headers = response.headers;
+                    expect(headers['access-control-allow-origin']).toBe('http://localhost:8000');
+                })
+                .expect(200, done);
+        });
+    });
+
     describe('GET /api ', function () {
 
         it('responds with json', function (done) {
             request(app)
                 .get('/api')
-                .set('Accept', 'application/json')
+                .set('Content-Type', 'application/json')
                 .expect('Content-Type', /json/)
                 .expect({ 'message': 'UNICEF contacts service API' })
                 .expect(200, done);
