@@ -1,9 +1,8 @@
 var ContactService = require('./contacts-service')();
-
+var corsMiddleware = require('./middleware/cors')();
 
 var express = require('express');
 var bodyParser = require('body-parser');
-var corsMiddleware = require('./middleware/cors')();
 
 var app = express();
 var router = express.Router();
