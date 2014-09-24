@@ -3,6 +3,7 @@ var ContactService = require('../app/contacts-service')();
 
 var express = require('express');
 var bodyParser = require('body-parser');
+var corsMiddleware = require('../app/middleware/cors')();
 
 var app = express();
 var router = express.Router();
@@ -11,11 +12,7 @@ var port = process.env.PORT || 8005;
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-
-app.use("/api/*", function (request, response, next) {
-    response.header('Access-Control-Allow-Origin', 'http://localhost:8000');
-    next();
-});
+app = corsMiddleware.allowCors(app);
 
 router.get('/', ContactService.welcomeMessage);
 
