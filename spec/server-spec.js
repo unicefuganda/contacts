@@ -9,22 +9,6 @@ describe('Server API', function () {
         contactsProvider.deleteAll();
     });
 
-    describe('/api/*', function () {
-        it('allows cross origin requests from localhost', function (done) {
-            request(app)
-                .get('/api/')
-                .set('Accept', 'application/json')
-                .set('origin', 'http://localhost:3000')
-                .expect(function (response) {
-                    var headers = response.headers;
-                    expect(headers['access-control-allow-origin']).toBe('http://localhost:3000');
-                })
-                .expect(200, done);
-        });
-        // TODO test that requests with no domains get null as header, or no header at all.
-        // TODO test that requesters with domains not allowed in config get null as header setting
-    });
-
     describe('GET /api ', function () {
 
         it('responds with json', function (done) {
