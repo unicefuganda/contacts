@@ -10,7 +10,6 @@ module.exports = function (phoneNumber) {
             return phoneUtil.isValidNumber(parsedPhoneNumber);
         }
         catch(ex) {
-            console.log(ex);
             return false;
         }
     };
