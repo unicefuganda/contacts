@@ -14,12 +14,19 @@ module.exports = function () {
     return {
 
         find: function (req, res) {
-            if (req.query.searchfield == undefined || req.query.searchfield == '')
+            if (req.query.searchfield == undefined) {
+                contactsProvider.findAll(function (err, contacts) {
+                    res.json(contacts);
+                });
+            }
+            else if (req.query.searchfield == '') {
                 return res.status(400).json({ error: 'No searchfield querystring given' });
-
-            contactsProvider.find(req.query.searchfield, function (err, contacts) {
-                res.json(contacts);
-            });
+            }
+            else {
+                contactsProvider.find(req.query.searchfield, function (err, contacts) {
+                    res.json(contacts);
+                });
+          }
         },
 
         findById: function (req, res) {

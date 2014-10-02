@@ -21,21 +21,25 @@ describe('Server API', function () {
         });
     });
 
-    describe('GET /api/contacts?searchfield="value"', function () {
+    describe('GET /api/contacts[?searchfield="value"]', function () {
 
-        it('responds with an ERROR when "searchfield" querystring is NOT defined', function (done) {
+        it('responds with ALL the contacts when "searchfield" querystring is NOT defined', function (done) {
             var contacts = [
                 { firstName: "test", lastName: "user1", phone: "+254 782 443432" },
                 { firstName: "test", lastName: "user12", phone: "+254 782 443431" }
             ];
 
             contactsProvider.addAll(contacts, function () {
-                request(app)
-                    .get('/api/contacts')
-                    .set('Accept', 'application/json')
-                    .expect('Content-Type', /json/)
-                    .expect({ error: 'No searchfield querystring given' })
-                    .expect(400, done);
+                contactsProvider.findAll(function (err, allContacts) {
+                    request(app)
+                        .get('/api/contacts')
+                        .set('Accept', 'application/json')
+                        .expect('Content-Type', /json/)
+                        .expect(function(response){
+                            expect(response.body.length).toEqual(2)
+                        })
+                        .expect(200, done);
+                });
             });
         });
 
