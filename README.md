@@ -10,15 +10,17 @@ Cross cutting contacts service for UNICEF Uganda. Currently used for th UNICEF E
 Developer Setup
 ==============
 
-Install Node Version Manager nvm
+Install [MongoDB](https://www.mongodb.org/downloads#packages)
 
-Install Node.js
+[Optional] Install [Node Version Manager](https://github.com/creationix/nvm) nvm
+
+Install [Node.js](https://github.com/joyent/node/wiki/Installing-Node.js-via-package-manager)
 
 Install Node Package Manager
 
 Run npm install
 
-To test, npm test
+To test, npm test (ensure mongod process is running)
 
 To run the node server, npm start
 
