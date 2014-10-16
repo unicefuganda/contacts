@@ -17,7 +17,9 @@ cp -ar contact-provisioning/chef/cookbooks /home/contacts-staging/provisioning/c
 cp -ar contact-provisioning/chef/roles /home/contacts-staging/provisioning/chef/
 echo "add cookbook and roles path to solo.rb"
 rm /etc/chef/solo.rb
-echo "provision eums to staging"
+echo 'cookbook_path "/home/contacts-staging/provisioning/chef/cookbooks"' >> /etc/chef/solo.rb
+echo 'role_path "/home/contacts-staging/provisioning/chef/roles"' >> /etc/chef/solo.rb
+echo "provision contacts to staging"
 chef-solo -o role[all-in-one]
 exit
 exit
