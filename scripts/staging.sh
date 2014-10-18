@@ -1,6 +1,6 @@
 #!/bin/bash
 echo "ssh into staging"
-ssh -t -i $HOME/.ssh/id_rsa_staging staging@196.0.26.51 << EOF
+ssh -t -t -i $HOME/.ssh/id_rsa_staging staging@196.0.26.51 << EOF
 echo "change to root user"
 sudo su
 echo "Go to home"
@@ -20,7 +20,9 @@ rm /etc/chef/solo.rb
 echo 'cookbook_path "/home/contacts-staging/provisioning/chef/cookbooks"' >> /etc/chef/solo.rb
 echo 'role_path "/home/contacts-staging/provisioning/chef/roles"' >> /etc/chef/solo.rb
 echo "provision contacts to staging"
-chef-solo -o role[all-in-one]
-exit
+chef-solo -o role[all]
+echo "restart nginx"
+killall -9 nginx
+service nginx restartexit
 exit
 EOF
