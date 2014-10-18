@@ -23,6 +23,7 @@ echo "provision contacts to staging"
 chef-solo -o role[all]
 echo "restart nginx"
 killall -9 nginx
-service nginx restartexit
+service nginx restart
+exit
 exit
 EOF
