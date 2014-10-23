@@ -4,7 +4,7 @@ describe('phoneValidator', function () {
     describe('formats phone Number', function () {
 
         it('formats VALID phone number and removes white spaces', function (done) {
-            var phoneValidator = new PhoneValidator('+256773090348');
+            var phoneValidator = new PhoneValidator('+256 773 090348');
             phoneValidator.format(function (err, formattedNumber) {
                 expect(err).toBe(null);
                 expect(formattedNumber).toBe('+256773090348');
