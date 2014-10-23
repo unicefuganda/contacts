@@ -18,7 +18,7 @@ module.exports = function (phoneNumber) {
 
         format: function (callback) {
             if (!isValid()) return callback({ error: 'Phone number format is wrong' });
-            return callback(null, phoneUtil.format(parsedPhoneNumber, phoneLib.PhoneNumberFormat.INTERNATIONAL));
+            return callback(null, phoneUtil.format(parsedPhoneNumber, phoneLib.PhoneNumberFormat.E164));
         }
     }
 };

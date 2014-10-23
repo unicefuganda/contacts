@@ -4,7 +4,7 @@ var contactsProvider = new ContactsProvider('mongodb://localhost/unicefcontactst
 describe("ContactsProvider", function () {
 
     // REFACTOR: there must be a better way to do this
-    afterEach(function() {
+    beforeEach(function() {
         contactsProvider.deleteAll();
     });
 
@@ -40,8 +40,8 @@ describe("ContactsProvider", function () {
     });
 
     it("should find contacts by firstName", function(done) {
-      var contacts = [{ firstName : "test", lastName : "user1", phone : "+254 782 443432" },
-                  { firstName : "test1", lastName : "user2", phone : "+254 782 443431" }];
+      var contacts = [{ firstName : "test", lastName : "user1", phone : "+254782443432" },
+                  { firstName : "test1", lastName : "user2", phone : "+254782443431" }];
 
       contactsProvider.addAll(contacts, function() {
         contactsProvider.find('Test', function(err, contacts) {
@@ -52,20 +52,20 @@ describe("ContactsProvider", function () {
     });
 
     it("should find contact by phone number", function(done) {
-      var contacts = [{ firstName : "test", lastName : "user1", phone : "+254 782 443432" },
-                  { firstName : "test1", lastName : "user2", phone : "+254 775 55555" }];
+      var contacts = [{ firstName : "test", lastName : "user1", phone : "+254782443432" },
+                  { firstName : "test1", lastName : "user2", phone : "+25477555555" }];
 
       contactsProvider.addAll(contacts, function() {
-        contactsProvider.find("+254 775 55555", function(err, contact) {
-          expect(contact[0].phone).toEqual("+254 775 55555");
+        contactsProvider.find("+25477555555", function(err, contact) {
+          expect(contact[0].phone).toEqual("+25477555555");
           done();
         });
       });
     });
 
     it("should find contacts by lastName", function(done) {
-      var contacts = [{ firstName : "test", lastName : "user1", phone : "+254 782 443432" },
-                  { firstName : "test1", lastName : "user3", phone : "+254 782 422431" }];
+      var contacts = [{ firstName : "test", lastName : "user1", phone : "+254782443432" },
+                  { firstName : "test1", lastName : "user3", phone : "+254782422431" }];
 
       contactsProvider.addAll(contacts, function() {
         contactsProvider.find('Ser3' , function(err, contacts) {
@@ -76,7 +76,7 @@ describe("ContactsProvider", function () {
     });
 
     it("should find contact by id", function(done) {
-      var contact = { firstName : "test", lastName : "user1", phone : "+254 782 443436" };
+      var contact = { firstName : "test", lastName : "user1", phone : "+254782443436" };
 
       contactsProvider.add(contact, function(err, addedContact) {
         contactsProvider.findById(addedContact._id , function(err, foundContact) {
@@ -85,6 +85,4 @@ describe("ContactsProvider", function () {
         });
       });
     });
-
-
 });

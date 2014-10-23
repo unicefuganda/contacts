@@ -1,13 +1,13 @@
 var PhoneValidator = require('../app/phone-validator');
 
 describe('phoneValidator', function () {
-    describe('formats phone Number basing on accepted International format', function () {
+    describe('formats phone Number', function () {
 
-        it('formats VALID phone number according to international format', function (done) {
+        it('formats VALID phone number and removes white spaces', function (done) {
             var phoneValidator = new PhoneValidator('+256773090348');
             phoneValidator.format(function (err, formattedNumber) {
                 expect(err).toBe(null);
-                expect(formattedNumber).toBe('+256 773 090348');
+                expect(formattedNumber).toBe('+256773090348');
                 done();
             });
         });
