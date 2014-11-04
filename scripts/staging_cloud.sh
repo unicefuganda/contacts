@@ -1,6 +1,6 @@
 #!/bin/bash
 echo "ssh into cloud staging"
-ssh -t -t -i $HOME/.ssh/id_rsa_staging_cloud azureuser@eums.cloudapp.net << EOF
+ssh -t -t -i $HOME/.ssh/cloud_id_rsa azureuser@eums.cloudapp.net << EOF
 echo "change to root user"
 sudo su
 echo "Go to home"
