@@ -9,7 +9,11 @@ Cross cutting contacts service for UNICEF Uganda. Currently used for th UNICEF E
 
 # Developer Setup
 
-Install [MongoDB](https://www.mongodb.org/downloads#packages)
+  Install [MongoDB](https://www.mongodb.org/downloads#packages)
+  
+  Run 'mongod' in terminal (You likely have to change write permissions on /data/db folder to allow it to generate     lock files) 
+
+==
 
 [Optional] Install [Node Version Manager](https://github.com/creationix/nvm) nvm
 
