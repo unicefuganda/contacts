@@ -61,6 +61,9 @@ module.exports = function (dbURI) {
 	        		callback(err, contact);
 	        	});
         },
+        delete: function(contactId, callback) {
+            Contact.find({ _id: contactId }).remove(callback);
+        },
 
         deleteAll: function () {
             Contact.remove({ }, function (err) {

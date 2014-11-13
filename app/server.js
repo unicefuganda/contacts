@@ -13,7 +13,7 @@ app.use(bodyParser.json());
 
 var allowCrossDomain = function(req, res, next) {
     res.header('Access-Control-Allow-Origin', "*");
-    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST');
+    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
     res.header('Access-Control-Allow-Headers', 'Content-Type');
     next();
 }
@@ -31,6 +31,8 @@ router.get('/contacts/:id', ContactService.findById);
 router.post('/contacts/', ContactService.add);
 
 router.put('/contacts/', ContactService.edit);
+
+router.delete('/contacts/:id', ContactService.delete);
 
 app.use('/api', router);
 

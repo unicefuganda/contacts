@@ -26,7 +26,7 @@ module.exports = function () {
                 contactsProvider.find(req.query.searchfield, function (err, contacts) {
                     res.json(contacts);
                 });
-          }
+            }
         },
 
         findById: function (req, res) {
@@ -71,6 +71,16 @@ module.exports = function () {
                         res.json({ _id: contact._id.toString(), firstName: contact.firstName, lastName: contact.lastName, phone: contact.phone });
                     });
             });
+        },
+
+        delete: function (req, res) {
+            var id = req.param('id');
+
+            if(id == null || id == '') return res.status(404).json({error: 'Contact does not exist'});
+
+            contactsProvider.delete(id, function () {
+                    res.json({message: 'Contact deleted'});
+                });
         },
 
         welcomeMessage: function (req, res) {

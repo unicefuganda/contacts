@@ -35,7 +35,7 @@ describe('Server API', function () {
                         .get('/api/contacts')
                         .set('Accept', 'application/json')
                         .expect('Content-Type', /json/)
-                        .expect(function(response){
+                        .expect(function (response) {
                             expect(response.body.length).toEqual(2)
                         })
                         .expect(200, done);
@@ -72,7 +72,7 @@ describe('Server API', function () {
                         .get('/api/contacts?searchfield=user')
                         .set('Accept', 'application/json')
                         .expect('Content-Type', /json/)
-                        .expect(function(response){
+                        .expect(function (response) {
                             expect(response.body.length).toEqual(2)
                         })
                         .expect(200, done);
@@ -193,6 +193,31 @@ describe('Server API', function () {
                         expect(res.body.error).toEqual("Phone number format is wrong");
                     })
                     .expect(400, done);
+            });
+        });
+    });
+
+    describe('DELETE /api/contacts/', function () {
+
+        it('deletes the contact with a particular _id', function (done) {
+            var contacts = [
+                { firstName: "test", lastName: "user1", phone: "+254782443432" },
+                { firstName: "test", lastName: "user12", phone: "+254782443431" }
+            ];
+
+            contactsProvider.addAll(contacts, function () {
+                contactsProvider.findAll(function (err, foundContacts) {
+                    var contactId = foundContacts[0]._id;
+
+                    request(app)
+                        .delete('/api/contacts/' + contactId)
+                        .set('Accept', 'application/json')
+                        .expect('Content-Type', /json/)
+                        .expect(function (res) {
+                            expect(res.body.message).toEqual("Contact deleted");
+                        })
+                        .expect(200, done);
+                });
             });
         });
     });
