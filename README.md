@@ -36,3 +36,20 @@ The api runs on port **8005** by deault or on the port designated when starting 
 Accessing the api root on localhost would be **http://localhost:8005/api**
 
 Viewing all contacts uses the endpoint **http://localhost:8005/api/contacts**
+
+
+#Deployment
+*Use Ubuntu 14.04 Operating System
+
+1. Add your public key to ~/.ssh/authorized_keys on the host server if you have not done this already
+
+2. Install chef version 11.8.2
+
+        $ apt-get install chef
+
+3. Run the installation script for contacts
+        
+        $ ./scripts/staging.sh <PRIVATE_KEY> <USER> <HOST_ADDRESS>
+        
+        # Example
+        $ ./scripts/staging.sh ~/.ssh/id_rsa eums 190.34.56.23
