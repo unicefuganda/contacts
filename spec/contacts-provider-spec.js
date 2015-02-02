@@ -41,6 +41,21 @@ describe("ContactsProvider", function () {
         });
     });
 
+    it("should order all contacts by firstName then lastName", function (done) {
+        var contacts = [
+            { firstName: "test", lastName: "user2", phone: "+254782443431" },
+            { firstName: "test", lastName: "user1", phone: "+254782443432" }
+        ];
+
+        contactsProvider.addAll(contacts, function () {
+            contactsProvider.findAll(function (err, contacts) {
+                expect(contacts[0].lastName).toEqual("user1");
+                expect(contacts[1].lastName).toEqual("user2");
+                done();
+            });
+        });
+    });
+
     it("should find contacts by firstName", function (done) {
         var contacts = [
             { firstName: "test", lastName: "user1", phone: "+254782443432" },
@@ -67,6 +82,24 @@ describe("ContactsProvider", function () {
                 done();
             });
         });
+    });
+
+    it("should order by firstName then lastName", function (done) {
+        var contacts = [
+            { firstName: "test", lastName: "user1", phone: "+254782443432" },
+            { firstName: "test2", lastName: "user3", phone: "+254782422431" },
+            { firstName: "test1", lastName: "user3", phone: "+254782427431" }
+        ];
+
+        contactsProvider.addAll(contacts, function () {
+            contactsProvider.find('Ser3', function (err, contacts) {
+                expect(contacts.length).toBe(2);
+                expect(contacts[0].firstName).toEqual("test1");
+                expect(contacts[1].firstName).toEqual("test2");
+                done();
+            });
+        });
+
     });
 
     it("should find contacts by lastName", function (done) {

@@ -12,8 +12,8 @@ var Contact = mongoose.model('Contact', contactSchema);
 
 module.exports = function (dbURI) {
     if (mongoose.connection.readyState != 2) {
-	    var connectionURI = dbURI || 'mongodb://localhost/unicefcontacts';
-	    mongoose.connect(connectionURI);
+        var connectionURI = dbURI || 'mongodb://localhost/unicefcontacts';
+        mongoose.connect(connectionURI);
     }
 
     return {
@@ -39,6 +39,7 @@ module.exports = function (dbURI) {
         findAll: function (callback) {
             Contact.find({ })
                 .select('firstName lastName phone')
+                .sort('firstName lastName')
                 .exec(function (err, contacts) {
                     callback(err, contacts);
                 });
@@ -47,21 +48,26 @@ module.exports = function (dbURI) {
         find: function (matcher, callback) {
             var regexMatcher = new RegExp(RegExp.quote(matcher), 'i');
             Contact.find()
-              .select('firstName lastName phone')
-              .or([{ firstName: regexMatcher }, { lastName: regexMatcher }, { phone: regexMatcher }])
-              .exec(function (err, contacts) {
-                callback( err, contacts);
-              });
+                .select('firstName lastName phone')
+                .or([
+                    { firstName: regexMatcher },
+                    { lastName: regexMatcher },
+                    { phone: regexMatcher }
+                ])
+                .sort('firstName lastName')
+                .exec(function (err, contacts) {
+                    callback(err, contacts);
+                });
         },
 
-        findById: function(contactId, callback) {
-        	Contact.findById(contactId)
-	        	.select('firstName lastName phone')
-	        	.exec(function(err, contact) {
-	        		callback(err, contact);
-	        	});
+        findById: function (contactId, callback) {
+            Contact.findById(contactId)
+                .select('firstName lastName phone')
+                .exec(function (err, contact) {
+                    callback(err, contact);
+                });
         },
-        delete: function(contactId, callback) {
+        delete: function (contactId, callback) {
             Contact.find({ _id: contactId }).remove(callback);
         },
 
