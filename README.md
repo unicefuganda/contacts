@@ -9,26 +9,14 @@ Cross cutting contacts service for UNICEF Uganda. Currently used for th UNICEF E
 
 # Developer Setup
 
-  Install [MongoDB](https://www.mongodb.org/downloads#packages)
-  
-  Run 'mongod' in terminal (You likely have to change write permissions on /data/db folder to allow it to generate     lock files) 
-
-==
-
-[Optional] Install [Node Version Manager](https://github.com/creationix/nvm) nvm
-
-Install [Node.js](https://github.com/joyent/node/wiki/Installing-Node.js-via-package-manager)
-
-Install **Node Package Manager**
-
-To install node package dependencies
-> npm install
-
-To run tests (ensure mongod process is running)
-> npm test
-
-To run the node server
-> npm start
+* Install [MongoDB](https://www.mongodb.org/downloads#packages)
+* Run `mongod` in terminal (You likely have to change write permissions on /data/db folder to allow it to generate lock files) 
+* [Optional] Install [Node Version Manager](https://github.com/creationix/nvm)
+* Install [Node.js](https://github.com/joyent/node/wiki/Installing-Node.js-via-package-manager) - this should also make the Node Package Manager (npm) available
+* Run the following commands:
+	* `npm install` - installs the node package dependencies
+	* `npm test` - runs the tests (as well as ensures mongod is running)
+	* `npm start` - runs the node server
 
 # API
 
@@ -39,7 +27,8 @@ Viewing all contacts uses the endpoint **http://localhost:8005/api/contacts**
 
 
 #Deployment
-*Use Ubuntu 14.04 Operating System
+
+**Note:** Use Ubuntu 14.04 Operating System
 
 1. Add your public key to ~/.ssh/authorized_keys on the host server if you have not done this already
 
@@ -53,3 +42,12 @@ Viewing all contacts uses the endpoint **http://localhost:8005/api/contacts**
         
         # Example
         $ ./scripts/staging.sh ~/.ssh/id_rsa eums 190.34.56.23
+        
+4. Import in initial contacts
+	* There is no automated way to do this at the moment. Our suggestion would be to use a CSV file containing the contacts and then use the mongoimport utility to import them into the database.
+	* CSV file format:
+		* First row is the header row with: `firstName, lastName, phone`
+		* The remaining rows would be populated with actual contact data (e.g. `John, Smith, +256777888999`)
+	* Run the following command:  
+	
+		`mongoimport -d unicefcontacts -c contacts --type csv --file contacts.csv --headerline`
