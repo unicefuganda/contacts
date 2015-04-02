@@ -17,20 +17,20 @@ rm -rf contact-provisioning
 source /etc/profile
 
 echo "remove chef directory"
-rm -rf /var/www/contacts-staging/provisioning
+rm -rf /var/www/contacts-provisioning
 
 echo "create chef directory"
-mkdir -p /var/www/contacts-staging/provisioning
+mkdir -p /var/www/contacts-provisioning
 
 echo "clone the provisoning repository"
-git clone https://github.com/unicefuganda/contact-provisioning.git /var/www/contacts-staging/provisioning
+git clone https://github.com/unicefuganda/contact-provisioning.git /var/www/contacts-provisioning
 
 echo "add cookbook and roles path to solo.rb"
 rm /etc/chef/solo.rb
 
-echo 'cookbook_path "/var/www/contacts-staging/provisioning/chef/cookbooks"' >> /etc/chef/solo.rb
+echo 'cookbook_path "/var/www/contacts-provisioning/chef/cookbooks"' >> /etc/chef/solo.rb
 
-echo 'role_path "/var/www/contacts-staging/provisioning/chef/roles"' >> /etc/chef/solo.rb
+echo 'role_path "/var/www/contacts-provisioning/chef/roles"' >> /etc/chef/solo.rb
 
 echo "provision contacts to staging"
 chef-solo -o role[all]
