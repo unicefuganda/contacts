@@ -55,8 +55,8 @@ RUN curl -SLO "http://nodejs.org/dist/v$NODE_VERSION/node-v$NODE_VERSION-linux-x
 ##############################################################################
 ADD . /opt/app/contacts
 ADD scripts/startContacts.sh /opt/scripts/startContacts.sh
-RUN chmod a+x /opt/scripts/startContacts.sh
-RUN cd /opt/app/contacts
-RUN npm install
+ADD scripts/initContacts.sh /opt/scripts/initContacts.sh
+RUN chmod a+x /opt/scripts/*.sh
+RUN /opt/scripts/initContacts.sh
 CMD ["/usr/bin/supervisord"]
 
