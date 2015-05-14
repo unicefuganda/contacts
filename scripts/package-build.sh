@@ -8,4 +8,4 @@ echo "Packaging for Artifact=$artifactName BuildCounter=$artifactCounter GitRevi
 
 mkdir -p /opt/app/staging/$artifactName/$artifactCounter
 sudo docker build -t unicef/$artifactName:$artifactCounter .
-sudo docker save -o /opt/app/staging/$artifactName/$artifactCounter/contacts_docker_image.tar unicef/$artifactName:$artifactCounter
+sudo docker save -o $artifactName_docker_image.tar unicef/$artifactName:$artifactCounter
