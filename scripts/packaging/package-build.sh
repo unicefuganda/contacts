@@ -16,3 +16,4 @@ sudo docker save -o build/$artifactName"_docker_image.tar" unicef/$artifactName:
 sed -i -e 's/%IMAGEFILE%/$artifactName_docker_image\.tar/g' scripts/packaging/install-image-contacts.sh
 sed -i -e 's/%IMAGENAME%/unicef\/$artifactName/g' scripts/packaging/install-image-contacts.sh
 sed -i -e 's/%IMAGEVERSION%/$artifactCounter/g' scripts/packaging/install-image-contacts.sh
+cp scripts/packaging/install-image-eums.sh build/scripts/packaging/install-image-contacts.sh
