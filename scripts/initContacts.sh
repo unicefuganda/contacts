@@ -1,4 +1,4 @@
 #!/bin/bash
 
-RUN cd /opt/app/contacts
-RUN npm install
+cd /opt/app/contacts
+npm install
