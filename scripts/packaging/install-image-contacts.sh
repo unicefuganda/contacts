@@ -1,5 +1,6 @@
 #!/bin/bash
 
+set -e
 
 docker load -i %IMAGEFILE%
 docker tag -f %IMAGENAME%:latest %IMAGENAME%:rollback
