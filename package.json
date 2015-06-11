@@ -10,7 +10,7 @@
     "url": "https://github.com/unicefuganda/contacts.git"
   },
   "scripts": {
-    "start": "nodemon app/server.js",
+    "start": "node app/server.js",
     "test": "istanbul cover grunt"
   },
   "devDependencies": {
