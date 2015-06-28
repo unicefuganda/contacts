@@ -3,8 +3,8 @@ var fs = require('fs');
 var validateOrigin = function (origin, callback) {
     fs.readFile('./config/config.json', 'utf8', function (err, data) {
         var allowedOrigins = JSON.parse(data).ALLOWED_ORIGINS;
-        if(process.env["LOCAL_HOST_HTTP_URL"]){
-            allowedOrigins.push(process.env["LOCAL_HOST_HTTP_URL"]);
+        if(process.env["LOCAL_HOST_IP"]){
+            allowedOrigins.push("http://" + process.env["LOCAL_HOST_IP"]);
         }
 
         var matchedOrigin = allowedOrigins.filter(function (allowedOrigin) {
