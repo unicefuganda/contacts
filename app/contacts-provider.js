@@ -1,14 +1,21 @@
 var mongoose = require('mongoose');
+var _ = require('underscore');
 RegExp.quote = require("regexp-quote");
 
-var contactSchema = mongoose.Schema({ firstName: String,
+var contactSchema = mongoose.Schema({
+    firstName: String,
     lastName: String,
-    phone: { type: String, unique: true },
-    createdOn: { type: Date, 'default': Date.now },
-    updatedOn: Date });
+    fullName: String,
+    phone: {type: String, unique: true},
+    createdOn: {type: Date, 'default': Date.now},
+    updatedOn: Date
+});
 
 var Contact = mongoose.model('Contact', contactSchema);
 
+var extendFullName = function(contact) {
+    _.extend(contact, {fullName: contact.firstName + ' ' + contact.lastName});
+};
 
 module.exports = function (dbURI) {
     if (mongoose.connection.readyState != 2) {
@@ -18,6 +25,8 @@ module.exports = function (dbURI) {
 
     return {
         add: function (contactDetails, callback) {
+            extendFullName(contactDetails);
+
             var contact = new Contact(contactDetails);
             contact.save(function (err, savedContact) {
                 callback(err, savedContact);
@@ -25,19 +34,25 @@ module.exports = function (dbURI) {
         },
 
         addAll: function (contacts, callback) {
+            for (var i = 0; i < contacts.length; i++) {
+                var contact = contacts[i];
+                extendFullName(contact);
+            }
+
             Contact.create(contacts, function (err) {
                 callback();
             });
         },
 
         edit: function (contact_id, contactDetails, callback) {
-            Contact.findByIdAndUpdate(contact_id, { $set: contactDetails }, function (err, updatedContact) {
+            extendFullName(contactDetails);
+            Contact.findByIdAndUpdate(contact_id, {$set: contactDetails}, function (err, updatedContact) {
                 callback(err, updatedContact);
             });
         },
 
         findAll: function (callback) {
-            Contact.find({ })
+            Contact.find({})
                 .select('firstName lastName phone')
                 .sort('firstName lastName')
                 .exec(function (err, contacts) {
@@ -48,11 +63,12 @@ module.exports = function (dbURI) {
         find: function (matcher, callback) {
             var regexMatcher = new RegExp(RegExp.quote(matcher), 'i');
             Contact.find()
-                .select('firstName lastName phone')
+                .select('firstName lastName phone fullName')
                 .or([
-                    { firstName: regexMatcher },
-                    { lastName: regexMatcher },
-                    { phone: regexMatcher }
+                    {firstName: regexMatcher},
+                    {lastName: regexMatcher},
+                    {phone: regexMatcher},
+                    {fullName: regexMatcher}
                 ])
                 .sort('firstName lastName')
                 .exec(function (err, contacts) {
@@ -68,12 +84,12 @@ module.exports = function (dbURI) {
                 });
         },
         delete: function (contactId, callback) {
-            Contact.find({ _id: contactId }).remove(callback);
+            Contact.find({_id: contactId}).remove(callback);
         },
 
         deleteAll: function () {
-            Contact.remove({ }, function (err) {
+            Contact.remove({}, function (err) {
             });
         }
-    }
+    };
 };
