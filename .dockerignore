@@ -1,1 +1,14 @@
-.git
+*/contacts/.git*
+*/contacts/logs*
+*/contacts/*.log
+*/contacts/contacts.iml
+*/contacts/pids
+*/contacts/*.pid
+*/contacts/*.seed
+*/contacts/lib-cov*
+*/contacts/coverage*
+*/contacts/.grunt*
+*/contacts/build/Release*
+*/contacts/node_modules*
+*/contacts/.idea*
+*/contacts/spec*
