@@ -8,6 +8,7 @@ var contactSchema = mongoose.Schema({
     fullName: String,
     phone: {type: String, unique: true},
     createdOn: {type: Date, 'default': Date.now},
+    createdByUserId: Number,
     updatedOn: Date
 });
 
@@ -74,6 +75,30 @@ module.exports = function (dbURI) {
                 .exec(function (err, contacts) {
                     callback(err, contacts);
                 });
+        },
+
+        findExtended: function (createdbyuserid, matcher, callback) {
+            var query = Contact.find()
+                .select('firstName lastName phone fullName');
+
+            if (createdbyuserid) {
+                query.where('createdByUserId').equals(createdbyuserid)
+            }
+
+            if (matcher) {
+                var regexMatcher = new RegExp(RegExp.quote(matcher), 'i');
+                query.or([
+                    {firstName: regexMatcher},
+                    {lastName: regexMatcher},
+                    {phone: regexMatcher},
+                    {fullName: regexMatcher}
+                ])
+            }
+
+            query.sort('firstName lastName')
+            query.exec(function (err, contacts) {
+                callback(err, contacts);
+            });
         },
 
         findById: function (contactId, callback) {
