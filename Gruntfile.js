@@ -59,4 +59,11 @@ module.exports = function(grunt) {
   grunt.registerTask('default', ['jasmine_node:all']);
 
   grunt.loadNpmTasks('grunt-coveralls');
+
+  // Catch unhandled exceptions and show the stack trace. This is most
+  // useful when running the jasmine specs.
+  process.on('uncaughtException',function(e) {
+    grunt.log.error('Caught unhandled exception: ' + e.toString());
+    grunt.log.error(e.stack);
+  });
 };

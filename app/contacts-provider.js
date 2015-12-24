@@ -25,10 +25,15 @@ module.exports = function (dbURI) {
     }
 
     return {
+
         add: function (contactDetails, callback) {
             extendFullName(contactDetails);
 
             var contact = new Contact(contactDetails);
+            if (!contact.createdByUserId) {
+                throw new Error('Param createdByUserId cannot be empty')
+            }
+
             contact.save(function (err, savedContact) {
                 callback(err, savedContact);
             });
@@ -47,42 +52,27 @@ module.exports = function (dbURI) {
 
         edit: function (contact_id, contactDetails, callback) {
             extendFullName(contactDetails);
+            // CreatedByUserId should not be changed in editing.
+            delete contactDetails["createdByUserId"];
             Contact.findByIdAndUpdate(contact_id, {$set: contactDetails}, function (err, updatedContact) {
                 callback(err, updatedContact);
             });
         },
 
         findAll: function (callback) {
-            Contact.find({})
-                .select('firstName lastName phone')
-                .sort('firstName lastName')
-                .exec(function (err, contacts) {
-                    callback(err, contacts);
-                });
+            this.findExtended(undefined, undefined, callback);
         },
 
         find: function (matcher, callback) {
-            var regexMatcher = new RegExp(RegExp.quote(matcher), 'i');
-            Contact.find()
-                .select('firstName lastName phone fullName')
-                .or([
-                    {firstName: regexMatcher},
-                    {lastName: regexMatcher},
-                    {phone: regexMatcher},
-                    {fullName: regexMatcher}
-                ])
-                .sort('firstName lastName')
-                .exec(function (err, contacts) {
-                    callback(err, contacts);
-                });
+            this.findExtended(undefined, matcher, callback);
         },
 
-        findExtended: function (createdbyuserid, matcher, callback) {
+        findExtended: function (createdByUserId, matcher, callback) {
             var query = Contact.find()
-                .select('firstName lastName phone fullName');
+                .select('firstName lastName phone fullName createdByUserId');
 
-            if (createdbyuserid) {
-                query.where('createdByUserId').equals(createdbyuserid)
+            if (createdByUserId) {
+                query.where('createdByUserId').equals(createdByUserId)
             }
 
             if (matcher) {
@@ -108,6 +98,7 @@ module.exports = function (dbURI) {
                     callback(err, contact);
                 });
         },
+
         delete: function (contactId, callback) {
             Contact.find({_id: contactId}).remove(callback);
         },

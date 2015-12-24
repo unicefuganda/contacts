@@ -9,7 +9,7 @@ describe("ContactsProvider", function () {
     });
 
     it("should add a new contact", function (done) {
-        contactsProvider.add({ firstName: "test", lastName: "user1", phone: "+254782443432" }, function (err, newContact) {
+        contactsProvider.add({ firstName: "test", lastName: "user1", phone: "+254782443432", createdByUserId: 5 }, function (err, newContact) {
             expect(newContact.firstName).toBe("test");
             expect(newContact._id).toBeDefined();
             expect(newContact.createdOn).toBeDefined();
@@ -18,7 +18,7 @@ describe("ContactsProvider", function () {
     });
 
     it("should edit an existing contact", function (done) {
-        contactsProvider.add({ firstName: "test", lastName: "user1", phone: "+254782443432" }, function (err, addedContact) {
+        contactsProvider.add({ firstName: "test", lastName: "user1", phone: "+254782443432", createdByUserId: 5 }, function (err, addedContact) {
             contactsProvider.edit(addedContact._id, { firstName: "test_edit", lastName: "user1", phone: "+254782443432" }, function (err, editedContact) {
                 expect(editedContact.firstName).toBe("test_edit");
                 expect(editedContact.lastName).toBe("user1");
@@ -117,7 +117,7 @@ describe("ContactsProvider", function () {
     });
 
     it("should find contact by id", function (done) {
-        var contact = { firstName: "test", lastName: "user1", phone: "+254782443436" };
+        var contact = { firstName: "test", lastName: "user1", phone: "+254782443436", createdByUserId: 5 };
 
         contactsProvider.add(contact, function (err, addedContact) {
             contactsProvider.findById(addedContact._id, function (err, foundContact) {
