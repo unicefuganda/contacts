@@ -163,7 +163,7 @@ describe('Server API', function () {
     describe('GET /api/contacts/:id', function () {
 
         it('responds with an error when given id does not match any contacts', function (done) {
-            var contact = {firstName: "test", lastName: "user1", phone: "+256782443432"};
+            var contact = { firstName: "test", lastName: "user1", phone: "+256782443432", createdByUserId: 5 };
 
             contactsProvider.add(contact, function (err, addedContact) {
                 request(app)
@@ -175,7 +175,7 @@ describe('Server API', function () {
         });
 
         it('gets a contact by id', function (done) {
-            var contact = {firstName: "test", lastName: "user1", phone: "+256782443432"};
+            var contact = { firstName: "test", lastName: "user1", phone: "+256782443432", createdByUserId: 5 };
             contactsProvider.add(contact, function (err, addedContact) {
                 request(app)
                     .get('/api/contacts/' + addedContact._id)
@@ -226,7 +226,7 @@ describe('Server API', function () {
         });
 
         it('responds with an error message when a contact with the same phone number exists', function (done) {
-            var contact = {firstName: "test", lastName: "user1", phone: "+256782444323", createdByUserId: 5};
+            var contact = { firstName: "test", lastName: "user1", phone: "+256782444323", createdByUserId: 5 };
 
             contactsProvider.add(contact, function () {
                 request(app)
@@ -250,7 +250,7 @@ describe('Server API', function () {
                 .set('Accept', 'application/json')
                 .expect('Content-Type', /json/)
                 .expect(function (res) {
-                    expect(res.body.error).toEqual("CreatedByUserId param is missing");
+                    expect(res.body.error).toEqual("Param createdByUserId is missing");
                 })
                 .expect(400, done);
         });
@@ -259,7 +259,7 @@ describe('Server API', function () {
     describe('PUT /api/contacts/ ', function () {
 
         it('responds with edited contact as json if contact exists', function (done) {
-            var contact = {firstName: "test", lastName: "user1", phone: "+254782443432"};
+            var contact = { firstName: "test", lastName: "user1", phone: "+254782443432", createdByUserId: 5 };
 
             contactsProvider.add(contact, function (err, addedContact) {
                 var edited_contact = {
@@ -284,7 +284,7 @@ describe('Server API', function () {
         });
 
         it('responds with an error message when phone number is in wrong format', function (done) {
-            var contact = {firstName: "test", lastName: "user1", phone: "+254782443432"};
+            var contact = { firstName: "test", lastName: "user1", phone: "+254782443432", createdByUserId: 5 };
 
             contactsProvider.add(contact, function (err, addedContact) {
                 var edited_contact = {
@@ -303,6 +303,31 @@ describe('Server API', function () {
                         expect(res.body.error).toEqual("Phone number format is wrong");
                     })
                     .expect(400, done);
+            });
+        });
+
+        it('responds with unchanged "createdByUserId" even the filed is specified in editing', function (done) {
+            var contact = {firstName: "test", lastName: "user1", phone: "+254782443432", createdByUserId: 5};
+
+            contactsProvider.add(contact, function (err, addedContact) {
+                var edited_contact = {
+                    _id: addedContact._id,
+                    firstName: "test_edit",
+                    lastName: "user1",
+                    phone: "+254701443432"
+                };
+
+                request(app)
+                    .put('/api/contacts/')
+                    .send(edited_contact)
+                    .set('Accept', 'application/json')
+                    .expect('Content-Type', /json/)
+                    .expect(function (res) {
+                        expect(res.body.firstName).toEqual("test_edit");
+                        expect(res.body.lastName).toEqual("user1");
+                        expect(res.body.phone).toEqual("+254701443432");
+                    })
+                    .expect(200, done);
             });
         });
     });
