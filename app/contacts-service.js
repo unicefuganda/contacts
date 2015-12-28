@@ -1,6 +1,7 @@
-var ContactsProvider = require('../app/contacts-provider');
+var ContactsProvider = require('./contacts-provider');
 var contactsProvider = new ContactsProvider();
-var PhoneValidator = require('../app/phone-validator');
+var PhoneValidator = require('./phone-validator');
+var BusinessError = require('./errors/business-error');
 
 module.exports = function () {
 
@@ -14,35 +15,37 @@ module.exports = function () {
     return {
 
         find: function (req, res) {
-            if ((req.query.createdbyuserid == undefined || req.query.createdbyuserid != '') &&
-                (req.query.searchfield == undefined || req.query.searchfield != '')) {
-                contactsProvider.findExtended(req.query.createdbyuserid, req.query.searchfield, function (err, contacts) {
+            if (req.query.createdbyuserid == '' || req.query.searchfield == '') {
+                throw new BusinessError(400, 'No searchfield or createdbyuserid query-string given')
+            }
+
+            contactsProvider.findExtended(req.query.createdbyuserid, req.query.searchfield,
+                function (err, contacts) {
                     res.json(contacts);
-                });
-            }
-            else {
-                return res.status(400).json({error: 'No searchfield or createdbyuserid query-string given'});
-            }
+                }
+            );
         },
 
         findById: function (req, res) {
             var contactId = req.param('id');
             contactsProvider.findById(contactId, function (err, contact) {
-                if (err || contact == null) return res.status(404).json({error: 'Contact not found'});
+                if (err || contact == null) {
+                    throw new BusinessError(404, 'Contact not found')
+                }
 
                 res.json(contact);
             });
         },
 
         add: function (req, res) {
-            var createdByUserId = req.param('createdByUserId');
-            if (!createdByUserId) {
-                return res.status(400).json({error: 'Param createdByUserId is missing'});
+            if (!req.param('createdByUserId')) {
+                throw new BusinessError(400, 'Param createdByUserId is missing')
             }
 
-            var phoneNumber = req.param('phone');
-            formatPhoneNumber(phoneNumber, function (err, formattedNumber) {
-                if (err) return res.status(400).json(err);
+            formatPhoneNumber(req.param('phone'), function (err, formattedNumber) {
+                if (err) {
+                    throw new BusinessError(400, err.error);
+                }
 
                 contactsProvider.findExtended(undefined, formattedNumber, function (err, contacts) {
                     if (contacts.length) {
@@ -53,7 +56,7 @@ module.exports = function () {
                         firstName: req.param('firstName'),
                         lastName: req.param('lastName'),
                         phone: formattedNumber,
-                        createdByUserId: createdByUserId
+                        createdByUserId: req.param('createdByUserId')
                     };
 
                     contactsProvider.add(contactDetails, function (err, contact) {
@@ -63,7 +66,6 @@ module.exports = function () {
                         });
                     });
                 });
-
             });
         },
 
@@ -71,7 +73,9 @@ module.exports = function () {
 
             var phoneNumber = req.param('phone');
             formatPhoneNumber(phoneNumber, function (err, formattedNumber) {
-                if (err) return res.status(400).json(err);
+                if (err) {
+                    throw new BusinessError(400, err.error);
+                }
 
                 contactsProvider.edit(req.param('_id'), {
                         firstName: req.param('firstName'),
@@ -92,7 +96,9 @@ module.exports = function () {
         delete: function (req, res) {
             var id = req.param('id');
 
-            if (id == null || id == '') return res.status(404).json({error: 'Contact does not exist'});
+            if (id == null || id == '') {
+                throw new BusinessError(404, 'Contact does not exist')
+            }
 
             contactsProvider.delete(id, function () {
                 res.json({message: 'Contact deleted'});

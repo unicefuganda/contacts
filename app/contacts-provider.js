@@ -14,7 +14,7 @@ var contactSchema = mongoose.Schema({
 
 var Contact = mongoose.model('Contact', contactSchema);
 
-var extendFullName = function(contact) {
+var extendFullName = function (contact) {
     _.extend(contact, {fullName: contact.firstName + ' ' + contact.lastName});
 };
 
@@ -72,7 +72,7 @@ module.exports = function (dbURI) {
                 .select('firstName lastName phone fullName createdByUserId');
 
             if (createdByUserId) {
-                query.where('createdByUserId').equals(createdByUserId)
+                query.where('createdByUserId').equals(createdByUserId);
             }
 
             if (matcher) {
