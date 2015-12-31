@@ -3,11 +3,13 @@ var corsMiddleware = require('./middleware/cors')();
 
 var express = require('express');
 var bodyParser = require('body-parser');
+var util = require('util');
 
 var app = express();
 var router = express.Router();
 var port = process.env.PORT || 8005;
 
+app.use(require('express-domain-middleware'));
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
@@ -39,9 +41,10 @@ app.use('/api', router);
 app.listen(port);
 
 // Do logging and user-friendly error message display
-app.use(function (err, req, res, next) {
+app.use(function errorHandler(err, req, res, next) {
+    console.log('Error: %d %s %s: %j', process.domain.id, req.method, req.url, util.inspect(err, {showHidden: false, depth: 1}));
     if (!err.status) {
-        return res.status(500).json({error: 'internal error'})
+        return res.status(500).json({error: 'Service internal error'})
     }
 
     res.status(err.status).send({error: err.message});
