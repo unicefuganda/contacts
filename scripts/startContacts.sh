@@ -3,7 +3,7 @@
 while [ -z "`netstat -tln | grep -w 27017`" ]; do
   echo 'Waiting for MongoDB to start ...'
   sleep 1
-  if [ $((timeout+=1)) -eq 10 ]; then
+  if [ $((timeout+=1)) -eq 20 ]; then
     break
   fi
 done
