@@ -24,19 +24,20 @@
     "load-grunt-tasks": "^0.6.0"
   },
   "dependencies": {
-    "nodemon": "~1.2.1",
-    "mongoose": "~3.8.16",
-    "grunt-mongo-migrations": "^0.6.1",
+    "body-parser": "~1.8.1",
     "coveralls": "^2.11.1",
-    "istanbul": "^0.3.2",
-    "grunt-jasmine-node-coverage": "^0.1.11",
     "express": "~4.9.0",
     "express-domain-middleware": "0.1.0",
-    "body-parser": "~1.8.1",
-    "supertest": "^0.13.0",
-    "node-phonenumber": "^0.1.2",
+    "grunt-jasmine-node-coverage": "^0.1.11",
+    "grunt-mongo-migrations": "^0.6.1",
+    "istanbul": "^0.3.2",
+    "mongoose": "~3.8.16",
     "mongoose-text-search": "0.0.2",
+    "node-phonenumber": "^0.1.2",
+    "nodemon": "~1.2.1",
+    "raven": "^0.10.0",
     "regexp-quote": "0.0.0",
+    "supertest": "^0.13.0",
     "underscore": "1.8.3"
   }
 }

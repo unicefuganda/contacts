@@ -4,10 +4,13 @@ var corsMiddleware = require('./middleware/cors')();
 var express = require('express');
 var bodyParser = require('body-parser');
 var util = require('util');
+var raven = require('raven')
 
 var app = express();
 var router = express.Router();
 var port = process.env.PORT || 8005;
+
+app.use(raven.middleware.express.requestHandler(process.env.SENTRY_DSN));
 
 app.use(require('express-domain-middleware'));
 app.use(bodyParser.urlencoded({extended: true}));
@@ -37,6 +40,8 @@ router.put('/contacts/', ContactService.edit);
 router.delete('/contacts/:id', ContactService.delete);
 
 app.use('/api', router);
+
+app.use(raven.middleware.express.errorHandler(process.env.SENTRY_DSN));
 
 app.listen(port);
 
