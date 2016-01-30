@@ -4,7 +4,6 @@ var PhoneValidator = require('./phone-validator');
 var BusinessError = require('./errors/business-error');
 
 module.exports = function () {
-
     function formatPhoneNumber(phoneNumber, callback) {
         var phoneValidator = new PhoneValidator(phoneNumber);
         phoneValidator.format(function (err, formattedNumber) {
@@ -13,7 +12,6 @@ module.exports = function () {
     }
 
     return {
-
         find: function (req, res) {
             if (req.query.createdbyuserid == '' || req.query.searchfield == '') {
                 throw new BusinessError(400, 'No searchfield or createdbyuserid query-string given')
