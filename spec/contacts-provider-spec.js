@@ -127,6 +127,10 @@ describe("ContactsProvider", function () {
         contactsProvider.add(contact_jade, function (err, addedContact) {
             contactsProvider.findById(addedContact._id, function (err, foundContact) {
                 expect(foundContact._id).toEqual(addedContact._id);
+                expect(foundContact.firstName).toEqual(addedContact.firstName);
+                expect(foundContact.lastName).toEqual(addedContact.lastName);
+                expect(foundContact.district).toEqual(addedContact.district);
+                expect(isArrayEqual(foundContact.ips, addedContact.ips)).toBeTruthy()
                 done();
             });
         });

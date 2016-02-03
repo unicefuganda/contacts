@@ -31,6 +31,7 @@
     "grunt-jasmine-node-coverage": "^0.1.11",
     "grunt-mongo-migrations": "^0.6.1",
     "istanbul": "^0.3.2",
+    "lodash": "^4.2.0",
     "mongoose": "~3.8.16",
     "mongoose-text-search": "0.0.2",
     "node-phonenumber": "^0.1.2",

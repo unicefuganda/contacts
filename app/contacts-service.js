@@ -54,13 +54,20 @@ module.exports = function () {
                         firstName: req.param('firstName'),
                         lastName: req.param('lastName'),
                         phone: formattedNumber,
-                        createdByUserId: req.param('createdByUserId')
+                        createdByUserId: req.param('createdByUserId'),
+                        district: req.param('district'),
+                        ips: req.param('ips')
                     };
 
                     contactsProvider.add(contactDetails, function (err, contact) {
                         res.json({
-                            _id: contact._id.toString(), firstName: contact.firstName,
-                            lastName: contact.lastName, phone: contact.phone, createdByUserId: contact.createdByUserId
+                            _id: contact._id.toString(),
+                            firstName: contact.firstName,
+                            lastName: contact.lastName,
+                            phone: contact.phone,
+                            createdByUserId: contact.createdByUserId,
+                            district: contact.district,
+                            ips: contact.ips
                         });
                     });
                 });
@@ -78,14 +85,18 @@ module.exports = function () {
                 contactsProvider.edit(req.param('_id'), {
                         firstName: req.param('firstName'),
                         lastName: req.param('lastName'),
-                        phone: formattedNumber
+                        phone: formattedNumber,
+                        district: req.param('district'),
+                        ips: req.param('ips')
                     },
                     function (err, contact) {
                         res.json({
                             _id: contact._id.toString(),
                             firstName: contact.firstName,
                             lastName: contact.lastName,
-                            phone: contact.phone
+                            phone: contact.phone,
+                            district: contact.district,
+                            ips: contact.ips
                         });
                     });
             });

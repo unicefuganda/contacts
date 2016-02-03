@@ -96,7 +96,7 @@ module.exports = function (dbURI) {
 
         findById: function (contactId, callback) {
             Contact.findById(contactId)
-                .select('firstName lastName phone')
+                .select('firstName lastName phone district ips')
                 .exec(function (err, contact) {
                     callback(err, contact);
                 });
