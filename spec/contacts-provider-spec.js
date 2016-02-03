@@ -1,4 +1,7 @@
+var Utils = require('./utils');
 var ContactsProvider = require('../app/contacts-provider');
+
+var isArrayEqual = new Utils().isArrayEqual;
 var contactsProvider = new ContactsProvider('mongodb://localhost/unicefcontactstest');
 
 describe("ContactsProvider", function () {
@@ -188,8 +191,4 @@ describe("ContactsProvider", function () {
             });
         });
     });
-
-    var isArrayEqual = function (actual_array, expected_array) {
-        return actual_array.toString() === expected_array.toString();
-    }
 });

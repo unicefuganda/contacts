@@ -1,7 +1,10 @@
 var _ = require('lodash');
 var request = require('supertest');
+var Utils = require('./utils');
 var app = require('../app/server');
 var ContactsProvider = require('../app/contacts-provider');
+
+var isArrayEqual = new Utils().isArrayEqual;
 var contactsProvider = new ContactsProvider('mongodb://localhost/unicefcontactstest');
 
 describe('Server API', function () {
@@ -334,8 +337,4 @@ describe('Server API', function () {
             });
         });
     });
-
-    var isArrayEqual = function (actual_array, expected_array) {
-        return actual_array.toString() === expected_array.toString();
-    }
 });
