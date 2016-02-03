@@ -117,6 +117,7 @@ describe("ContactsProvider", function () {
         contactsProvider.addAll(contacts, function () {
             contactsProvider.find(contact_jade.lastName, function (err, contacts) {
                 expect(contacts.length).toBe(1);
+                expect(contacts[0].lastName).toBe(contact_jade.lastName)
                 done();
             });
         });
@@ -126,6 +127,45 @@ describe("ContactsProvider", function () {
         contactsProvider.add(contact_jade, function (err, addedContact) {
             contactsProvider.findById(addedContact._id, function (err, foundContact) {
                 expect(foundContact._id).toEqual(addedContact._id);
+                done();
+            });
+        });
+    });
+
+    it("should find contacts by district", function (done) {
+        contactsProvider.add(contact_jade, function (err, addedContact) {
+            contactsProvider.find(addedContact.district, function (err, foundContacts) {
+                expect(foundContacts[0]._id).toEqual(addedContact._id);
+                expect(foundContacts[0].district).toEqual(addedContact.district);
+                done();
+            });
+        });
+    });
+
+    it("should find an empty contacts list by district not exists", function (done) {
+        contactsProvider.add(contact_jade, function () {
+            contactsProvider.find("NotExistingDistrict", function (err, foundContacts) {
+                expect(foundContacts.length).toBe(0);
+                done();
+            });
+        });
+    });
+
+    it("should find contacts by ips", function (done) {
+        contactsProvider.add(contact_jade, function (err, addedContact) {
+            contactsProvider.find(addedContact.ips[0], function (err, foundContacts) {
+                expect(foundContacts[0]._id).toEqual(addedContact._id);
+                expect(foundContacts[0].district).toEqual(addedContact.district);
+                expect(isArrayEqual(addedContact.ips, contact_jade.ips)).toBeTruthy();
+                done();
+            });
+        });
+    });
+
+    it("should find empty contacts list by ips not exist", function (done) {
+        contactsProvider.add(contact_jade, function () {
+            contactsProvider.find("NotExistingIPS", function (err, foundContacts) {
+                expect(foundContacts.length).toBe(0);
                 done();
             });
         });

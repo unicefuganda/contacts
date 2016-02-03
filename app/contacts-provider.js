@@ -70,7 +70,7 @@ module.exports = function (dbURI) {
 
         findExtended: function (createdByUserId, matcher, callback) {
             var query = Contact.find()
-                .select('firstName lastName phone fullName createdByUserId');
+                .select('firstName lastName phone fullName createdByUserId district ips');
 
             if (createdByUserId) {
                 query.where('createdByUserId').equals(createdByUserId);
@@ -82,7 +82,9 @@ module.exports = function (dbURI) {
                     {firstName: regexMatcher},
                     {lastName: regexMatcher},
                     {phone: regexMatcher},
-                    {fullName: regexMatcher}
+                    {fullName: regexMatcher},
+                    {district: regexMatcher},
+                    {ips: regexMatcher}
                 ])
             }
 
