@@ -2,37 +2,60 @@ var ContactsProvider = require('../app/contacts-provider');
 var contactsProvider = new ContactsProvider('mongodb://localhost/unicefcontactstest');
 
 describe("ContactsProvider", function () {
+    var contact_john = {
+        firstName: "John",
+        lastName: "Doe",
+        phone: "+254782443432",
+        district: "wakiso",
+        ips: ["WAKISO DHO", "END USER"],
+        createdByUserId: 5
+    };
+    var contact_jade = {
+        firstName: "Jade",
+        lastName: "Sam",
+        phone: "+254782443431",
+        district: "kampala",
+        ips: ["KAMPALA DHO"],
+        createdByUserId: 5
+    };
+    var contacts = [contact_john, contact_jade];
 
-    // REFACTOR: there must be a better way to do this
     beforeEach(function () {
         contactsProvider.deleteAll();
     });
 
     it("should add a new contact", function (done) {
-        contactsProvider.add({ firstName: "test", lastName: "user1", phone: "+254782443432", createdByUserId: 5 }, function (err, newContact) {
-            expect(newContact.firstName).toBe("test");
+        contactsProvider.add(contact_john, function (err, newContact) {
             expect(newContact._id).toBeDefined();
+            expect(newContact.firstName).toBe(contact_john.firstName);
+            expect(newContact.lastName).toBe(contact_john.lastName);
+            expect(newContact.phone).toBe(contact_john.phone);
             expect(newContact.createdOn).toBeDefined();
+            expect(newContact.district).toBe(contact_john.district);
+            expect(isArrayEqual(newContact.ips, contact_john.ips)).toBeTruthy();
             done();
         });
     });
 
     it("should edit an existing contact", function (done) {
-        contactsProvider.add({ firstName: "test", lastName: "user1", phone: "+254782443432", createdByUserId: 5 }, function (err, addedContact) {
-            contactsProvider.edit(addedContact._id, { firstName: "test_edit", lastName: "user1", phone: "+254782443432" }, function (err, editedContact) {
-                expect(editedContact.firstName).toBe("test_edit");
-                expect(editedContact.lastName).toBe("user1");
+        contactsProvider.add(contact_john, function (err, addedContact) {
+            contactsProvider.edit(addedContact._id, {
+                firstName: "Jack",
+                lastName: "Doe",
+                phone: "+254782443432",
+                district: "kampala",
+                ips: ["KAMPALA DHO"]
+            }, function (err, editedContact) {
+                expect(editedContact.firstName).toBe("Jack");
+                expect(editedContact.lastName).toBe("Doe");
+                expect(editedContact.district).toBe("kampala");
+                expect(isArrayEqual(editedContact.ips, ["KAMPALA DHO"])).toBeTruthy();
                 done();
             });
         });
     });
 
     it("should find all contacts", function (done) {
-        var contacts = [
-            { firstName: "test", lastName: "user1", phone: "+254782443432" },
-            { firstName: "test", lastName: "user2", phone: "+254782443431" }
-        ];
-
         contactsProvider.addAll(contacts, function () {
             contactsProvider.findAll(function (err, contacts) {
                 expect(contacts.length).toBe(2);
@@ -42,74 +65,57 @@ describe("ContactsProvider", function () {
     });
 
     it("should order all contacts by firstName then lastName", function (done) {
-        var contacts = [
-            { firstName: "test", lastName: "user2", phone: "+254782443431" },
-            { firstName: "test", lastName: "user1", phone: "+254782443432" }
-        ];
-
         contactsProvider.addAll(contacts, function () {
             contactsProvider.findAll(function (err, contacts) {
-                expect(contacts[0].lastName).toEqual("user1");
-                expect(contacts[1].lastName).toEqual("user2");
+                expect(contacts.toString()).toContain(contact_john.lastName);
+                expect(contacts.toString()).toContain(contact_jade.lastName);
                 done();
             });
         });
     });
 
     it("should find contacts by firstName", function (done) {
-        var contacts = [
-            { firstName: "test", lastName: "user1", phone: "+254782443432" },
-            { firstName: "test1", lastName: "user2", phone: "+254782443431" }
-        ];
-
         contactsProvider.addAll(contacts, function () {
-            contactsProvider.find('Test', function (err, contacts) {
-                expect(contacts.length).toBe(2);
+            contactsProvider.find(contact_jade.firstName, function (err, contacts) {
+                expect(contacts.length).toBe(1);
                 done();
             });
         });
     });
 
     it("should find contact by phone number", function (done) {
-        var contacts = [
-            { firstName: "test", lastName: "user1", phone: "+254782443432" },
-            { firstName: "test1", lastName: "user2", phone: "+25477555555" }
-        ];
-
         contactsProvider.addAll(contacts, function () {
-            contactsProvider.find("+25477555555", function (err, contact) {
-                expect(contact[0].phone).toEqual("+25477555555");
+            contactsProvider.find(contact_jade.phone, function (err, contact) {
+                expect(contact[0].phone).toEqual(contact_jade.phone);
                 done();
             });
         });
     });
 
     it("should order by firstName then lastName", function (done) {
-        var contacts = [
-            { firstName: "test", lastName: "user1", phone: "+254782443432" },
-            { firstName: "test2", lastName: "user3", phone: "+254782422431" },
-            { firstName: "test1", lastName: "user3", phone: "+254782427431" }
-        ];
+        var contact_bill = {
+            firstName: "Jade",
+            lastName: "Bill",
+            phone: "+254782453431",
+            district: "kampala",
+            ips: ["KAMPALA DHO"],
+            createdByUserId: 5
+        };
+        var contacts = [contact_john, contact_jade, contact_bill];
 
         contactsProvider.addAll(contacts, function () {
-            contactsProvider.find('Ser3', function (err, contacts) {
+            contactsProvider.find("Jade", function (err, contacts) {
+                expect(contacts.toString()).toContain(contact_bill.firstName);
+                expect(contacts.toString()).toContain(contact_jade.firstName);
                 expect(contacts.length).toBe(2);
-                expect(contacts[0].firstName).toEqual("test1");
-                expect(contacts[1].firstName).toEqual("test2");
                 done();
             });
         });
-
     });
 
     it("should find contacts by lastName", function (done) {
-        var contacts = [
-            { firstName: "test", lastName: "user1", phone: "+254782443432" },
-            { firstName: "test1", lastName: "user3", phone: "+254782422431" }
-        ];
-
         contactsProvider.addAll(contacts, function () {
-            contactsProvider.find('Ser3', function (err, contacts) {
+            contactsProvider.find(contact_jade.lastName, function (err, contacts) {
                 expect(contacts.length).toBe(1);
                 done();
             });
@@ -117,9 +123,7 @@ describe("ContactsProvider", function () {
     });
 
     it("should find contact by id", function (done) {
-        var contact = { firstName: "test", lastName: "user1", phone: "+254782443436", createdByUserId: 5 };
-
-        contactsProvider.add(contact, function (err, addedContact) {
+        contactsProvider.add(contact_jade, function (err, addedContact) {
             contactsProvider.findById(addedContact._id, function (err, foundContact) {
                 expect(foundContact._id).toEqual(addedContact._id);
                 done();
@@ -128,15 +132,9 @@ describe("ContactsProvider", function () {
     });
 
     it("should delete a contact by id", function (done) {
-        var contacts = [
-            { firstName: "test", lastName: "user1", phone: "+254782443432" },
-            { firstName: "test1", lastName: "user3", phone: "+254782422431" }
-        ];
-
         contactsProvider.addAll(contacts, function () {
             contactsProvider.findAll(function (err, foundContacts) {
                 var contactToDelete = foundContacts[0];
-
                 contactsProvider.delete(contactToDelete._id, function () {
                     contactsProvider.findAll(function (err, contacts) {
                         expect(contacts.length).toBe(1);
@@ -145,6 +143,9 @@ describe("ContactsProvider", function () {
                 });
             });
         });
-
     });
+
+    var isArrayEqual = function (actual_array, expected_array) {
+        return actual_array.toString() === expected_array.toString();
+    }
 });

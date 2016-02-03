@@ -7,8 +7,10 @@ var contactSchema = mongoose.Schema({
     lastName: String,
     fullName: String,
     phone: {type: String, unique: true},
-    createdOn: {type: Date, 'default': Date.now},
     createdByUserId: Number,
+    district: String,
+    ips: [String],
+    createdOn: {type: Date, 'default': Date.now},
     updatedOn: Date
 });
 
@@ -25,7 +27,6 @@ module.exports = function (dbURI) {
     }
 
     return {
-
         add: function (contactDetails, callback) {
             extendFullName(contactDetails);
 
