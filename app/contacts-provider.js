@@ -9,7 +9,7 @@ var contactSchema = mongoose.Schema({
     phone: {type: String, required: true, unique: true},
     createdByUserId: {type: Number, required: true},
     district: {type: String, required: true},
-    ips: {type: [String], required: true},
+    ips: {type: [Number], required: true},
     createdOn: {type: Date, 'default': Date.now},
     updatedOn: Date
 });
@@ -72,15 +72,19 @@ module.exports = function (dbURI) {
             }
 
             if (matcher) {
-                var regexMatcher = new RegExp(RegExp.quote(matcher), 'i');
-                query.or([
-                    {firstName: regexMatcher},
-                    {lastName: regexMatcher},
-                    {phone: regexMatcher},
-                    {fullName: regexMatcher},
-                    {district: regexMatcher},
-                    {ips: regexMatcher}
-                ])
+                if (typeof matcher === 'string') {
+                    var regexMatcher = new RegExp(RegExp.quote(matcher), 'i');
+                    query.or([
+                        {firstName: regexMatcher},
+                        {lastName: regexMatcher},
+                        {phone: regexMatcher},
+                        {fullName: regexMatcher},
+                        {district: regexMatcher}
+                    ])
+                }
+                if (typeof matcher === 'number') {
+                    query.where('ips').equals(matcher);
+                }
             }
 
             query.sort('firstName lastName')

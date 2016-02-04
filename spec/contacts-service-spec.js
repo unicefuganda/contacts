@@ -16,7 +16,7 @@ describe('Server API', function () {
             lastName: "Doe",
             phone: "+256782434331",
             district: "wakiso",
-            ips: ["WAKISO DHO", "END USER"],
+            ips: [10, 20],
             createdByUserId: 5
         };
         contact_jade = {
@@ -24,7 +24,7 @@ describe('Server API', function () {
             lastName: "Sam",
             phone: "+254782443432",
             district: "kampala",
-            ips: ["KAMPALA DHO"],
+            ips: [8],
             createdByUserId: 5
         };
         contact_bill = {
@@ -32,7 +32,7 @@ describe('Server API', function () {
             lastName: "Bill",
             phone: "+254782453433",
             district: "kampala",
-            ips: ["KAMPALA DHO"],
+            ips: [8],
             createdByUserId: 6
         };
         contacts = [contact_john, contact_jade, contact_bill];
@@ -251,7 +251,7 @@ describe('Server API', function () {
                     lastName: "Bob",
                     phone: "+254701443432",
                     district: "kampala",
-                    ips: ["KAMPALA DHO", "END USER"]
+                    ips: [8, 20]
                 };
 
                 request(app)
@@ -264,7 +264,7 @@ describe('Server API', function () {
                         expect(res.body.lastName).toEqual("Bob");
                         expect(res.body.phone).toEqual("+254701443432");
                         expect(res.body.district).toEqual("kampala");
-                        expect(isArrayEqual(res.body.ips, ["KAMPALA DHO", "END USER"])).toBeTruthy();
+                        expect(isArrayEqual(res.body.ips, [8, 20])).toBeTruthy();
                     })
                     .expect(200, done);
             });
@@ -301,7 +301,7 @@ describe('Server API', function () {
                     lastName: "Bob",
                     phone: "+254701443432",
                     district: "kampala",
-                    ips: ["KAMPALA DHO", "END USER"]
+                    ips: [8, 20]
                 };
 
                 request(app)
@@ -314,7 +314,7 @@ describe('Server API', function () {
                         expect(res.body.lastName).toEqual("Bob");
                         expect(res.body.phone).toEqual("+254701443432");
                         expect(res.body.district).toEqual("kampala");
-                        expect(isArrayEqual(res.body.ips, ["KAMPALA DHO", "END USER"])).toBeTruthy();
+                        expect(isArrayEqual(res.body.ips, [8, 20])).toBeTruthy();
                     })
                     .expect(200, done);
             });

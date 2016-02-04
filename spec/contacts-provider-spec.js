@@ -14,7 +14,7 @@ describe("ContactsProvider", function () {
             lastName: "Doe",
             phone: "+254782443432",
             district: "wakiso",
-            ips: ["WAKISO DHO", "END USER"],
+            ips: [10, 20],
             createdByUserId: 5
         };
         contact_jade = {
@@ -22,7 +22,7 @@ describe("ContactsProvider", function () {
             lastName: "Sam",
             phone: "+254782443431",
             district: "kampala",
-            ips: ["KAMPALA DHO"],
+            ips: [8],
             createdByUserId: 5
         };
         contacts = [contact_john, contact_jade];
@@ -52,12 +52,12 @@ describe("ContactsProvider", function () {
                 lastName: "Doe",
                 phone: "+254782443432",
                 district: "kampala",
-                ips: ["KAMPALA DHO"]
+                ips: [8]
             }, function (err, editedContact) {
                 expect(editedContact.firstName).toBe("Jack");
                 expect(editedContact.lastName).toBe("Doe");
                 expect(editedContact.district).toBe("kampala");
-                expect(isArrayEqual(editedContact.ips, ["KAMPALA DHO"])).toBeTruthy();
+                expect(isArrayEqual(editedContact.ips, [8])).toBeTruthy();
                 done();
             });
         });
@@ -106,7 +106,7 @@ describe("ContactsProvider", function () {
             lastName: "Bill",
             phone: "+254782453431",
             district: "kampala",
-            ips: ["KAMPALA DHO"],
+            ips: [8],
             createdByUserId: 5
         };
         var contacts = [contact_john, contact_jade, contact_bill];
@@ -171,6 +171,18 @@ describe("ContactsProvider", function () {
                 expect(isArrayEqual(addedContact.ips, contact_jade.ips)).toBeTruthy();
                 done();
             });
+        });
+    });
+
+    it("should find contacts by ips and createdByUserId", function (done) {
+        contactsProvider.add(contact_jade, function (err, addedContact) {
+            contactsProvider.findExtended(addedContact.createdByUserId, addedContact.ips[0],
+                function (err, foundContacts) {
+                    expect(foundContacts[0]._id).toEqual(addedContact._id);
+                    expect(foundContacts[0].district).toEqual(addedContact.district);
+                    expect(isArrayEqual(addedContact.ips, contact_jade.ips)).toBeTruthy();
+                    done();
+                });
         });
     });
 
