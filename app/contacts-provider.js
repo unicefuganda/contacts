@@ -3,13 +3,13 @@ var _ = require('underscore');
 RegExp.quote = require("regexp-quote");
 
 var contactSchema = mongoose.Schema({
-    firstName: String,
-    lastName: String,
-    fullName: String,
-    phone: {type: String, unique: true},
-    createdByUserId: Number,
-    district: String,
-    ips: [String],
+    firstName: {type: String, required: true},
+    lastName: {type: String, required: true},
+    fullName: {type: String, required: true},
+    phone: {type: String, required: true, unique: true},
+    createdByUserId: {type: Number, required: true},
+    district: {type: String, required: true},
+    ips: {type: [String], required: true},
     createdOn: {type: Date, 'default': Date.now},
     updatedOn: Date
 });
@@ -31,10 +31,6 @@ module.exports = function (dbURI) {
             extendFullName(contactDetails);
 
             var contact = new Contact(contactDetails);
-            if (!contact.createdByUserId) {
-                throw new Error('Param createdByUserId cannot be empty')
-            }
-
             contact.save(function (err, savedContact) {
                 callback(err, savedContact);
             });
@@ -53,7 +49,6 @@ module.exports = function (dbURI) {
 
         edit: function (contact_id, contactDetails, callback) {
             extendFullName(contactDetails);
-            // CreatedByUserId should not be changed in editing.
             delete contactDetails["createdByUserId"];
             Contact.findByIdAndUpdate(contact_id, {$set: contactDetails}, function (err, updatedContact) {
                 callback(err, updatedContact);

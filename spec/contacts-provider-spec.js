@@ -1,3 +1,4 @@
+var _ = require('lodash');
 var Utils = require('./utils');
 var ContactsProvider = require('../app/contacts-provider');
 
@@ -5,23 +6,27 @@ var isArrayEqual = new Utils().isArrayEqual;
 var contactsProvider = new ContactsProvider('mongodb://localhost/unicefcontactstest');
 
 describe("ContactsProvider", function () {
-    var contact_john = {
-        firstName: "John",
-        lastName: "Doe",
-        phone: "+254782443432",
-        district: "wakiso",
-        ips: ["WAKISO DHO", "END USER"],
-        createdByUserId: 5
-    };
-    var contact_jade = {
-        firstName: "Jade",
-        lastName: "Sam",
-        phone: "+254782443431",
-        district: "kampala",
-        ips: ["KAMPALA DHO"],
-        createdByUserId: 5
-    };
-    var contacts = [contact_john, contact_jade];
+    var contact_john, contact_jade, contacts;
+
+    beforeEach(function () {
+        contact_john = {
+            firstName: "John",
+            lastName: "Doe",
+            phone: "+254782443432",
+            district: "wakiso",
+            ips: ["WAKISO DHO", "END USER"],
+            createdByUserId: 5
+        };
+        contact_jade = {
+            firstName: "Jade",
+            lastName: "Sam",
+            phone: "+254782443431",
+            district: "kampala",
+            ips: ["KAMPALA DHO"],
+            createdByUserId: 5
+        };
+        contacts = [contact_john, contact_jade];
+    });
 
     beforeEach(function () {
         contactsProvider.deleteAll();
@@ -190,5 +195,60 @@ describe("ContactsProvider", function () {
                 });
             });
         });
+    });
+
+    it("should throw exception when adding a contact without createdByUserId", function (done) {
+        var contactWithoutCreatedByUserId = _.omit(contact_john, 'createdByUserId');
+
+        contactsProvider.add(contactWithoutCreatedByUserId, function (err) {
+            expect(err.toString()).toBe('ValidationError: Path `createdByUserId` is required.');
+        });
+        done();
+
+    });
+
+    it("should throw exception when adding a contact without district", function (done) {
+        var contactWithoutDistrict = _.omit(contact_john, 'district');
+
+        contactsProvider.add(contactWithoutDistrict, function (err) {
+            expect(err.toString()).toBe('ValidationError: Path `district` is required.');
+        });
+        done();
+    });
+
+    it("should throw exception when adding a contact without firstName", function (done) {
+        var contactWithoutFirstName = _.omit(contact_john, 'firstName');
+
+        contactsProvider.add(contactWithoutFirstName, function (err) {
+            expect(err.toString()).toBe('ValidationError: Path `firstName` is required.');
+        });
+        done();
+    });
+
+    it("should throw exception when adding a contact without lastName", function (done) {
+        var contactWithoutLastName = _.omit(contact_john, 'lastName');
+
+        contactsProvider.add(contactWithoutLastName, function (err) {
+            expect(err.toString()).toBe('ValidationError: Path `lastName` is required.');
+        });
+        done();
+    });
+
+    it("should throw exception when adding a contact without phone", function (done) {
+        var contactWithoutPhone = _.omit(contact_john, 'phone');
+
+        contactsProvider.add(contactWithoutPhone, function (err) {
+            expect(err.toString()).toBe('ValidationError: Path `phone` is required.');
+        });
+        done();
+    });
+
+    it("should throw exception when adding a contact without ips", function (done) {
+        var contactWithoutIps = _.omit(contact_john, 'ips');
+
+        contactsProvider.add(contactWithoutIps, function (err) {
+            expect(err.toString()).toBe('ValidationError: Path `ips` is required.');
+        });
+        done();
     });
 });

@@ -8,31 +8,35 @@ var isArrayEqual = new Utils().isArrayEqual;
 var contactsProvider = new ContactsProvider('mongodb://localhost/unicefcontactstest');
 
 describe('Server API', function () {
-    var contact_john = {
-        firstName: "John",
-        lastName: "Doe",
-        phone: "+256782434331",
-        district: "wakiso",
-        ips: ["WAKISO DHO", "END USER"],
-        createdByUserId: 5
-    };
-    var contact_jade = {
-        firstName: "Jade",
-        lastName: "Sam",
-        phone: "+254782443432",
-        district: "kampala",
-        ips: ["KAMPALA DHO"],
-        createdByUserId: 5
-    };
-    var contact_bill = {
-        firstName: "Jade",
-        lastName: "Bill",
-        phone: "+254782453433",
-        district: "kampala",
-        ips: ["KAMPALA DHO"],
-        createdByUserId: 6
-    };
-    var contacts = [contact_john, contact_jade, contact_bill];
+    var contact_john, contact_jade, contact_bill, contacts;
+
+    beforeEach(function () {
+        contact_john = {
+            firstName: "John",
+            lastName: "Doe",
+            phone: "+256782434331",
+            district: "wakiso",
+            ips: ["WAKISO DHO", "END USER"],
+            createdByUserId: 5
+        };
+        contact_jade = {
+            firstName: "Jade",
+            lastName: "Sam",
+            phone: "+254782443432",
+            district: "kampala",
+            ips: ["KAMPALA DHO"],
+            createdByUserId: 5
+        };
+        contact_bill = {
+            firstName: "Jade",
+            lastName: "Bill",
+            phone: "+254782453433",
+            district: "kampala",
+            ips: ["KAMPALA DHO"],
+            createdByUserId: 6
+        };
+        contacts = [contact_john, contact_jade, contact_bill];
+    });
 
     afterEach(function () {
         contactsProvider.deleteAll();
@@ -198,11 +202,10 @@ describe('Server API', function () {
         });
 
         it('responds with an error message when phone number is in wrong format', function (done) {
-            var contact_with_wrong_phone_number = _.clone(contact_john);
-            contact_with_wrong_phone_number.phone = '0779500795';
+            contact_john.phone = '0779500795';
             request(app)
                 .post('/api/contacts/')
-                .send(contact_with_wrong_phone_number)
+                .send(contact_john)
                 .set('Accept', 'application/json')
                 .expect('Content-Type', /json/)
                 .expect(function (res) {
@@ -226,14 +229,14 @@ describe('Server API', function () {
         });
 
         it('responds with an error message when createdByUserId param is not defined', function (done) {
-            var incorrect_contact = _.omit(contact_john, 'createdByUserId')
+            var incorrect_contact = _.omit(contact_john, 'createdByUserId');
             request(app)
                 .post('/api/contacts/')
                 .send(incorrect_contact)
                 .set('Accept', 'application/json')
                 .expect('Content-Type', /json/)
                 .expect(function (res) {
-                    expect(res.body.error).toEqual("Param createdByUserId is missing");
+                    expect(res.body.error).toEqual("ValidationError: Path `createdByUserId` is required.");
                 })
                 .expect(400, done);
         });

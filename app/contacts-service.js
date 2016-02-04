@@ -36,10 +36,6 @@ module.exports = function () {
         },
 
         add: function (req, res) {
-            if (!req.param('createdByUserId')) {
-                throw new BusinessError(400, 'Param createdByUserId is missing')
-            }
-
             formatPhoneNumber(req.param('phone'), function (err, formattedNumber) {
                 if (err) {
                     throw new BusinessError(400, err.error);
@@ -60,6 +56,9 @@ module.exports = function () {
                     };
 
                     contactsProvider.add(contactDetails, function (err, contact) {
+                        if (err) {
+                            throw new BusinessError(400, err.toString());
+                        }
                         res.json({
                             _id: contact._id.toString(),
                             firstName: contact.firstName,
