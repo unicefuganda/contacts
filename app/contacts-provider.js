@@ -8,7 +8,7 @@ var contactSchema = mongoose.Schema({
     fullName: {type: String, required: true},
     phone: {type: String, required: true, unique: true},
     createdByUserId: {type: Number, required: true},
-    district: {type: String, required: true},
+    district: {type: [String], required: true},
     ips: {type: [Number], required: true},
     createdOn: {type: Date, 'default': Date.now},
     updatedOn: Date

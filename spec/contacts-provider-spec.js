@@ -13,7 +13,7 @@ describe("ContactsProvider", function () {
             firstName: "John",
             lastName: "Doe",
             phone: "+254782443432",
-            district: "wakiso",
+            district: ["Wakiso"],
             ips: [10, 20],
             createdByUserId: 5
         };
@@ -21,7 +21,7 @@ describe("ContactsProvider", function () {
             firstName: "Jade",
             lastName: "Sam",
             phone: "+254782443431",
-            district: "kampala",
+            district: ["Kampala"],
             ips: [8],
             createdByUserId: 5
         };
@@ -39,7 +39,7 @@ describe("ContactsProvider", function () {
             expect(newContact.lastName).toBe(contact_john.lastName);
             expect(newContact.phone).toBe(contact_john.phone);
             expect(newContact.createdOn).toBeDefined();
-            expect(newContact.district).toBe(contact_john.district);
+            expect(isArrayEqual(newContact.district, contact_john.district)).toBeTruthy();
             expect(isArrayEqual(newContact.ips, contact_john.ips)).toBeTruthy();
             done();
         });
@@ -51,12 +51,12 @@ describe("ContactsProvider", function () {
                 firstName: "Jack",
                 lastName: "Doe",
                 phone: "+254782443432",
-                district: "kampala",
+                district: "Kampala",
                 ips: [8]
             }, function (err, editedContact) {
                 expect(editedContact.firstName).toBe("Jack");
                 expect(editedContact.lastName).toBe("Doe");
-                expect(editedContact.district).toBe("kampala");
+                expect(isArrayEqual(editedContact.district, ["Kampala"])).toBeTruthy();
                 expect(isArrayEqual(editedContact.ips, [8])).toBeTruthy();
                 done();
             });
@@ -105,7 +105,7 @@ describe("ContactsProvider", function () {
             firstName: "Jade",
             lastName: "Bill",
             phone: "+254782453431",
-            district: "kampala",
+            district: "Kampala",
             ips: [8],
             createdByUserId: 5
         };
