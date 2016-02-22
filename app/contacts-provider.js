@@ -8,8 +8,8 @@ var contactSchema = mongoose.Schema({
     fullName: {type: String, required: true},
     phone: {type: String, required: true, unique: true},
     createdByUserId: {type: Number, required: true},
-    districts: {type: [String], required: true},
-    ips: {type: [Number], required: true},
+    districts: {type: [String]},
+    ips: {type: [Number]},
     createdOn: {type: Date, 'default': Date.now},
     updatedOn: Date
 });
@@ -29,7 +29,6 @@ module.exports = function (dbURI) {
     return {
         add: function (contactDetails, callback) {
             extendFullName(contactDetails);
-
             var contact = new Contact(contactDetails);
             contact.save(function (err, savedContact) {
                 callback(err, savedContact);

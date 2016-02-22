@@ -184,6 +184,29 @@ describe('Server API', function () {
     });
 
     describe('POST /api/contacts/ ', function () {
+        it('responds with added contact which only contains basic info', function (done) {
+            var contact = {
+                firstName: "John",
+                lastName: "Doe",
+                phone: "+256782434331",
+                districts: [],
+                ips: [],
+                createdByUserId: 5
+            };
+            request(app)
+                .post('/api/contacts/')
+                .send(contact)
+                .set('Accept', 'application/json')
+                .expect('Content-Type', /json/)
+                .expect(function (res) {
+                    expect(res.body.firstName).toEqual(contact.firstName);
+                    expect(res.body.lastName).toEqual(contact.lastName);
+                    expect(res.body.phone).toEqual(contact.phone);
+                    expect(res.body.createdByUserId).toEqual(5);
+                    expect(res.body._id).toBeDefined();
+                })
+                .expect(200, done);
+        });
 
         it('responds with added contact as json', function (done) {
             request(app)
