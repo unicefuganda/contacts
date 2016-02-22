@@ -137,7 +137,7 @@ describe("ContactsProvider", function () {
                 expect(foundContact._id).toEqual(addedContact._id);
                 expect(foundContact.firstName).toEqual(addedContact.firstName);
                 expect(foundContact.lastName).toEqual(addedContact.lastName);
-                expect(foundContact.districts).toEqual(addedContact.districts);
+                expect(isArrayEqual(foundContact.districts, addedContact.districts)).toBeTruthy();
                 expect(isArrayEqual(foundContact.ips, addedContact.ips)).toBeTruthy()
                 done();
             });
@@ -148,7 +148,7 @@ describe("ContactsProvider", function () {
         contactsProvider.add(contact_jade, function (err, addedContact) {
             contactsProvider.find(addedContact.districts, function (err, foundContacts) {
                 expect(foundContacts[0]._id).toEqual(addedContact._id);
-                expect(foundContacts[0].districts).toEqual(addedContact.districts);
+                expect(isArrayEqual(foundContacts[0].districts, addedContact.districts)).toBeTruthy();
                 done();
             });
         });
@@ -167,7 +167,7 @@ describe("ContactsProvider", function () {
         contactsProvider.add(contact_jade, function (err, addedContact) {
             contactsProvider.find(addedContact.ips[0], function (err, foundContacts) {
                 expect(foundContacts[0]._id).toEqual(addedContact._id);
-                expect(foundContacts[0].districts).toEqual(addedContact.districts);
+                expect(isArrayEqual(foundContacts[0].districts, addedContact.districts)).toBeTruthy();
                 expect(isArrayEqual(addedContact.ips, contact_jade.ips)).toBeTruthy();
                 done();
             });
@@ -179,7 +179,7 @@ describe("ContactsProvider", function () {
             contactsProvider.findExtended(addedContact.createdByUserId, addedContact.ips[0],
                 function (err, foundContacts) {
                     expect(foundContacts[0]._id).toEqual(addedContact._id);
-                    expect(foundContacts[0].districts).toEqual(addedContact.districts);
+                    expect(isArrayEqual(foundContacts[0].districts, addedContact.districts)).toBeTruthy();
                     expect(isArrayEqual(addedContact.ips, contact_jade.ips)).toBeTruthy();
                     done();
                 });
