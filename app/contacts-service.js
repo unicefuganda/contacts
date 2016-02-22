@@ -51,7 +51,7 @@ module.exports = function () {
                         lastName: req.param('lastName'),
                         phone: formattedNumber,
                         createdByUserId: req.param('createdByUserId'),
-                        district: req.param('district'),
+                        districts: req.param('districts'),
                         ips: req.param('ips')
                     };
 
@@ -65,7 +65,7 @@ module.exports = function () {
                             lastName: contact.lastName,
                             phone: contact.phone,
                             createdByUserId: contact.createdByUserId,
-                            district: contact.district,
+                            districts: contact.districts,
                             ips: contact.ips
                         });
                     });
@@ -85,7 +85,7 @@ module.exports = function () {
                         firstName: req.param('firstName'),
                         lastName: req.param('lastName'),
                         phone: formattedNumber,
-                        district: req.param('district'),
+                        districts: req.param('districts'),
                         ips: req.param('ips')
                     },
                     function (err, contact) {
@@ -94,7 +94,7 @@ module.exports = function () {
                             firstName: contact.firstName,
                             lastName: contact.lastName,
                             phone: contact.phone,
-                            district: contact.district,
+                            districts: contact.districts,
                             ips: contact.ips
                         });
                     });

@@ -13,7 +13,7 @@ describe("ContactsProvider", function () {
             firstName: "John",
             lastName: "Doe",
             phone: "+254782443432",
-            district: ["Wakiso"],
+            districts: ["Wakiso"],
             ips: [10, 20],
             createdByUserId: 5
         };
@@ -21,7 +21,7 @@ describe("ContactsProvider", function () {
             firstName: "Jade",
             lastName: "Sam",
             phone: "+254782443431",
-            district: ["Kampala"],
+            districts: ["Kampala"],
             ips: [8],
             createdByUserId: 5
         };
@@ -39,7 +39,7 @@ describe("ContactsProvider", function () {
             expect(newContact.lastName).toBe(contact_john.lastName);
             expect(newContact.phone).toBe(contact_john.phone);
             expect(newContact.createdOn).toBeDefined();
-            expect(isArrayEqual(newContact.district, contact_john.district)).toBeTruthy();
+            expect(isArrayEqual(newContact.districts, contact_john.districts)).toBeTruthy();
             expect(isArrayEqual(newContact.ips, contact_john.ips)).toBeTruthy();
             done();
         });
@@ -51,12 +51,12 @@ describe("ContactsProvider", function () {
                 firstName: "Jack",
                 lastName: "Doe",
                 phone: "+254782443432",
-                district: "Kampala",
+                districts: "Kampala",
                 ips: [8]
             }, function (err, editedContact) {
                 expect(editedContact.firstName).toBe("Jack");
                 expect(editedContact.lastName).toBe("Doe");
-                expect(isArrayEqual(editedContact.district, ["Kampala"])).toBeTruthy();
+                expect(isArrayEqual(editedContact.districts, ["Kampala"])).toBeTruthy();
                 expect(isArrayEqual(editedContact.ips, [8])).toBeTruthy();
                 done();
             });
@@ -105,7 +105,7 @@ describe("ContactsProvider", function () {
             firstName: "Jade",
             lastName: "Bill",
             phone: "+254782453431",
-            district: "Kampala",
+            districts: "Kampala",
             ips: [8],
             createdByUserId: 5
         };
@@ -137,24 +137,24 @@ describe("ContactsProvider", function () {
                 expect(foundContact._id).toEqual(addedContact._id);
                 expect(foundContact.firstName).toEqual(addedContact.firstName);
                 expect(foundContact.lastName).toEqual(addedContact.lastName);
-                expect(foundContact.district).toEqual(addedContact.district);
+                expect(foundContact.districts).toEqual(addedContact.districts);
                 expect(isArrayEqual(foundContact.ips, addedContact.ips)).toBeTruthy()
                 done();
             });
         });
     });
 
-    it("should find contacts by district", function (done) {
+    it("should find contacts by districts", function (done) {
         contactsProvider.add(contact_jade, function (err, addedContact) {
-            contactsProvider.find(addedContact.district, function (err, foundContacts) {
+            contactsProvider.find(addedContact.districts, function (err, foundContacts) {
                 expect(foundContacts[0]._id).toEqual(addedContact._id);
-                expect(foundContacts[0].district).toEqual(addedContact.district);
+                expect(foundContacts[0].districts).toEqual(addedContact.districts);
                 done();
             });
         });
     });
 
-    it("should find an empty contacts list by district not exists", function (done) {
+    it("should find an empty contacts list by districts not exists", function (done) {
         contactsProvider.add(contact_jade, function () {
             contactsProvider.find("NotExistingDistrict", function (err, foundContacts) {
                 expect(foundContacts.length).toBe(0);
@@ -167,7 +167,7 @@ describe("ContactsProvider", function () {
         contactsProvider.add(contact_jade, function (err, addedContact) {
             contactsProvider.find(addedContact.ips[0], function (err, foundContacts) {
                 expect(foundContacts[0]._id).toEqual(addedContact._id);
-                expect(foundContacts[0].district).toEqual(addedContact.district);
+                expect(foundContacts[0].districts).toEqual(addedContact.districts);
                 expect(isArrayEqual(addedContact.ips, contact_jade.ips)).toBeTruthy();
                 done();
             });
@@ -179,7 +179,7 @@ describe("ContactsProvider", function () {
             contactsProvider.findExtended(addedContact.createdByUserId, addedContact.ips[0],
                 function (err, foundContacts) {
                     expect(foundContacts[0]._id).toEqual(addedContact._id);
-                    expect(foundContacts[0].district).toEqual(addedContact.district);
+                    expect(foundContacts[0].districts).toEqual(addedContact.districts);
                     expect(isArrayEqual(addedContact.ips, contact_jade.ips)).toBeTruthy();
                     done();
                 });
@@ -219,11 +219,11 @@ describe("ContactsProvider", function () {
 
     });
 
-    it("should throw exception when adding a contact without district", function (done) {
-        var contactWithoutDistrict = _.omit(contact_john, 'district');
+    it("should throw exception when adding a contact without districts", function (done) {
+        var contactWithoutDistrict = _.omit(contact_john, 'districts');
 
         contactsProvider.add(contactWithoutDistrict, function (err) {
-            expect(err.toString()).toBe('ValidationError: Path `district` is required.');
+            expect(err.toString()).toBe('ValidationError: Path `districts` is required.');
         });
         done();
     });

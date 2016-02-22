@@ -8,7 +8,7 @@ var contactSchema = mongoose.Schema({
     fullName: {type: String, required: true},
     phone: {type: String, required: true, unique: true},
     createdByUserId: {type: Number, required: true},
-    district: {type: [String], required: true},
+    districts: {type: [String], required: true},
     ips: {type: [Number], required: true},
     createdOn: {type: Date, 'default': Date.now},
     updatedOn: Date
@@ -65,7 +65,7 @@ module.exports = function (dbURI) {
 
         findExtended: function (createdByUserId, matcher, callback) {
             var query = Contact.find()
-                .select('firstName lastName phone fullName createdByUserId district ips');
+                .select('firstName lastName phone fullName createdByUserId districts ips');
 
             if (createdByUserId) {
                 query.where('createdByUserId').equals(createdByUserId);
@@ -79,7 +79,7 @@ module.exports = function (dbURI) {
                         {lastName: regexMatcher},
                         {phone: regexMatcher},
                         {fullName: regexMatcher},
-                        {district: regexMatcher}
+                        {districts: regexMatcher}
                     ])
                 }
                 if (typeof matcher === 'number') {
@@ -95,7 +95,7 @@ module.exports = function (dbURI) {
 
         findById: function (contactId, callback) {
             Contact.findById(contactId)
-                .select('firstName lastName phone district ips')
+                .select('firstName lastName phone districts ips')
                 .exec(function (err, contact) {
                     callback(err, contact);
                 });
