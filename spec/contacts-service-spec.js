@@ -17,6 +17,8 @@ describe('Server API', function () {
             phone: "+256782434331",
             districts: ["Wakiso"],
             ips: [10, 20],
+            types: ['end user'],
+            outcomes: ['+8615388618154'],
             createdByUserId: 5
         };
         contact_jade = {
@@ -25,6 +27,8 @@ describe('Server API', function () {
             phone: "+254782443432",
             districts: ["Kampala"],
             ips: [8],
+            types: ['sub consignee'],
+            outcomes: ['+8618192235667'],
             createdByUserId: 5
         };
         contact_bill = {
@@ -33,6 +37,8 @@ describe('Server API', function () {
             phone: "+254782453433",
             districts: ["Kampala"],
             ips: [8],
+            types: ['ip'],
+            outcomes: ['+8618192235467'],
             createdByUserId: 6
         };
         contacts = [contact_john, contact_jade, contact_bill];
@@ -167,16 +173,20 @@ describe('Server API', function () {
 
         it('gets a contact by id', function (done) {
             contactsProvider.add(contact_john, function (err, addedContact) {
+
                 request(app)
                     .get('/api/contacts/' + addedContact._id)
                     .expect('Content-Type', /json/)
-                    .expect({
-                        _id: addedContact._id.toString(),
-                        firstName: contact_john.firstName,
-                        lastName: contact_john.lastName,
-                        phone: contact_john.phone,
-                        districts: contact_john.districts,
-                        ips: contact_john.ips
+                    .expect(function (res) {
+                        expect(res.body._id).toEqual(addedContact._id.toString());
+                        expect(res.body.firstName).toEqual(contact_john.firstName);
+                        expect(res.body.lastName).toEqual(contact_john.lastName);
+                        expect(res.body.phone).toEqual(contact_john.phone);
+                        expect(isArrayEqual(res.body.districts, contact_john.districts)).toBeTruthy();
+                        expect(isArrayEqual(res.body.ips, contact_john.ips)).toBeTruthy();
+                        expect(isArrayEqual(res.body.types, contact_john.types)).toBeTruthy();
+                        expect(isArrayEqual(res.body.outcomes, contact_john.outcomes)).toBeTruthy();
+                        expect(res.body.createdOn).toBeDefined();
                     })
                     .expect(200, done);
             });
@@ -191,6 +201,8 @@ describe('Server API', function () {
                 phone: "+256782434331",
                 districts: [],
                 ips: [],
+                types: [],
+                outcomes: [],
                 createdByUserId: 5
             };
             request(app)
@@ -220,6 +232,11 @@ describe('Server API', function () {
                     expect(res.body.phone).toEqual(contact_john.phone);
                     expect(res.body.createdByUserId).toEqual(5);
                     expect(res.body._id).toBeDefined();
+                    expect(isArrayEqual(res.body.districts, contact_john.districts)).toBeTruthy();
+                    expect(isArrayEqual(res.body.ips, contact_john.ips)).toBeTruthy();
+                    expect(isArrayEqual(res.body.types, contact_john.types)).toBeTruthy();
+                    expect(isArrayEqual(res.body.outcomes, contact_john.outcomes)).toBeTruthy();
+                    expect(res.body.createdOn).toBeDefined();
                 })
                 .expect(200, done);
         });
@@ -274,7 +291,9 @@ describe('Server API', function () {
                     lastName: "Bob",
                     phone: "+254701443432",
                     districts: ["Kampala"],
-                    ips: [8, 20]
+                    ips: [8, 20],
+                    types: ["update ip"],
+                    outcomes: ["+8618794849374"]
                 };
 
                 request(app)
@@ -286,8 +305,11 @@ describe('Server API', function () {
                         expect(res.body.firstName).toEqual("Jack");
                         expect(res.body.lastName).toEqual("Bob");
                         expect(res.body.phone).toEqual("+254701443432");
-                        expect(isArrayEqual(res.body.districts, ["Kampala"])).toBeTruthy();
-                        expect(isArrayEqual(res.body.ips, [8, 20])).toBeTruthy();
+                        expect(isArrayEqual(res.body.districts, edited_contact.districts)).toBeTruthy();
+                        expect(isArrayEqual(res.body.ips, edited_contact.ips)).toBeTruthy();
+                        expect(isArrayEqual(res.body.types, edited_contact.types)).toBeTruthy();
+                        expect(isArrayEqual(res.body.outcomes, edited_contact.outcomes)).toBeTruthy();
+                        expect(res.body.createdOn).toBeDefined();
                     })
                     .expect(200, done);
             });
@@ -324,7 +346,9 @@ describe('Server API', function () {
                     lastName: "Bob",
                     phone: "+254701443432",
                     districts: ["Kampala"],
-                    ips: [8, 20]
+                    ips: [8, 20],
+                    types: ["update ip"],
+                    outcomes: ["+8618794849374"],
                 };
 
                 request(app)
@@ -333,11 +357,14 @@ describe('Server API', function () {
                     .set('Accept', 'application/json')
                     .expect('Content-Type', /json/)
                     .expect(function (res) {
-                        expect(res.body.firstName).toEqual("Jack");
-                        expect(res.body.lastName).toEqual("Bob");
-                        expect(res.body.phone).toEqual("+254701443432");
-                        expect(isArrayEqual(res.body.districts, ["Kampala"])).toBeTruthy();
-                        expect(isArrayEqual(res.body.ips, [8, 20])).toBeTruthy();
+                        expect(res.body.firstName).toEqual(edited_contact.firstName);
+                        expect(res.body.lastName).toEqual(edited_contact.lastName);
+                        expect(res.body.phone).toEqual(edited_contact.phone);
+                        expect(isArrayEqual(res.body.districts, edited_contact.districts)).toBeTruthy();
+                        expect(isArrayEqual(res.body.ips, edited_contact.ips)).toBeTruthy();
+                        expect(isArrayEqual(res.body.types, edited_contact.types)).toBeTruthy();
+                        expect(isArrayEqual(res.body.outcomes, edited_contact.outcomes)).toBeTruthy();
+                        expect(res.body.createdOn).toBeDefined();
                     })
                     .expect(200, done);
             });

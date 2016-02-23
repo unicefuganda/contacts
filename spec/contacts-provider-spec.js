@@ -15,6 +15,8 @@ describe("ContactsProvider", function () {
             phone: "+254782443432",
             districts: ["Wakiso"],
             ips: [10, 20],
+            types: ['end user'],
+            outcomes: ['+8615388618154'],
             createdByUserId: 5
         };
         contact_jade = {
@@ -23,6 +25,8 @@ describe("ContactsProvider", function () {
             phone: "+254782443431",
             districts: ["Kampala"],
             ips: [8],
+            types: ['sub consignee'],
+            outcomes: ['+8618192235667'],
             createdByUserId: 5
         };
         contacts = [contact_john, contact_jade];
@@ -40,6 +44,8 @@ describe("ContactsProvider", function () {
             expect(newContact.phone).toBe(contact_john.phone);
             expect(newContact.createdOn).toBeDefined();
             expect(isArrayEqual(newContact.districts, contact_john.districts)).toBeTruthy();
+            expect(isArrayEqual(newContact.types, contact_john.types)).toBeTruthy();
+            expect(isArrayEqual(newContact.outcomes, contact_john.outcomes)).toBeTruthy();
             expect(isArrayEqual(newContact.ips, contact_john.ips)).toBeTruthy();
             done();
         });
@@ -52,11 +58,15 @@ describe("ContactsProvider", function () {
                 lastName: "Doe",
                 phone: "+254782443432",
                 districts: "Kampala",
+                types: ['update end user'],
+                outcomes: ['+18714957839'],
                 ips: [8]
             }, function (err, editedContact) {
                 expect(editedContact.firstName).toBe("Jack");
                 expect(editedContact.lastName).toBe("Doe");
                 expect(isArrayEqual(editedContact.districts, ["Kampala"])).toBeTruthy();
+                expect(isArrayEqual(editedContact.types, ["update end user"])).toBeTruthy();
+                expect(isArrayEqual(editedContact.outcomes, ["+18714957839"])).toBeTruthy();
                 expect(isArrayEqual(editedContact.ips, [8])).toBeTruthy();
                 done();
             });
@@ -105,7 +115,7 @@ describe("ContactsProvider", function () {
             firstName: "Jade",
             lastName: "Bill",
             phone: "+254782453431",
-            districts: "Kampala",
+            districts: ["Kampala"],
             ips: [8],
             createdByUserId: 5
         };

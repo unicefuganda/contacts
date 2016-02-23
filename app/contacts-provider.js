@@ -10,6 +10,8 @@ var contactSchema = mongoose.Schema({
     createdByUserId: {type: Number, required: true},
     districts: {type: [String]},
     ips: {type: [Number]},
+    types: {type: [String]},
+    outcomes: {type: [String]},
     createdOn: {type: Date, 'default': Date.now},
     updatedOn: Date
 });
@@ -78,7 +80,9 @@ module.exports = function (dbURI) {
                         {lastName: regexMatcher},
                         {phone: regexMatcher},
                         {fullName: regexMatcher},
-                        {districts: regexMatcher}
+                        {districts: regexMatcher},
+                        {types: regexMatcher},
+                        {outcomes: regexMatcher}
                     ])
                 }
                 if (typeof matcher === 'number') {
@@ -94,7 +98,7 @@ module.exports = function (dbURI) {
 
         findById: function (contactId, callback) {
             Contact.findById(contactId)
-                .select('firstName lastName phone districts ips')
+                .select('firstName lastName phone districts ips types outcomes createdOn')
                 .exec(function (err, contact) {
                     callback(err, contact);
                 });

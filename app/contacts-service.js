@@ -52,7 +52,9 @@ module.exports = function () {
                         phone: formattedNumber,
                         createdByUserId: req.param('createdByUserId'),
                         districts: req.param('districts'),
-                        ips: req.param('ips')
+                        ips: req.param('ips'),
+                        types: req.param('types'),
+                        outcomes: req.param('outcomes')
                     };
 
                     contactsProvider.add(contactDetails, function (err, contact) {
@@ -66,7 +68,10 @@ module.exports = function () {
                             phone: contact.phone,
                             createdByUserId: contact.createdByUserId,
                             districts: contact.districts,
-                            ips: contact.ips
+                            ips: contact.ips,
+                            types: contact.types,
+                            outcomes: contact.outcomes,
+                            createdOn: contact.createdOn
                         });
                     });
                 });
@@ -86,7 +91,9 @@ module.exports = function () {
                         lastName: req.param('lastName'),
                         phone: formattedNumber,
                         districts: req.param('districts'),
-                        ips: req.param('ips')
+                        ips: req.param('ips'),
+                        types: req.param('types'),
+                        outcomes: req.param('outcomes')
                     },
                     function (err, contact) {
                         res.json({
@@ -95,7 +102,10 @@ module.exports = function () {
                             lastName: contact.lastName,
                             phone: contact.phone,
                             districts: contact.districts,
-                            ips: contact.ips
+                            ips: contact.ips,
+                            types: contact.types,
+                            outcomes: contact.outcomes,
+                            createdOn: contact.createdOn
                         });
                     });
             });
