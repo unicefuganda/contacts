@@ -16,9 +16,9 @@ describe('Server API', function () {
             lastName: "Doe",
             phone: "+256782434331",
             districts: ["Wakiso"],
-            ips: [10, 20],
-            types: ['end user'],
-            outcomes: ['+8615388618154'],
+            ips: ["KAMPALA DHO", "WAKISO DHO"],
+            types: ['End-user'],
+            outcomes: ["YI101 - PCR 1 KEEP CHILDREN LEARNING"],
             createdByUserId: 5
         };
         contact_jade = {
@@ -26,9 +26,9 @@ describe('Server API', function () {
             lastName: "Sam",
             phone: "+254782443432",
             districts: ["Kampala"],
-            ips: [8],
-            types: ['sub consignee'],
-            outcomes: ['+8618192235667'],
+            ips: ["KAMPALA DHO"],
+            types: ['End-user'],
+            outcomes: ["YI101 - PCR 1 KEEP CHILDREN LEARNING"],
             createdByUserId: 5
         };
         contact_bill = {
@@ -36,9 +36,9 @@ describe('Server API', function () {
             lastName: "Bill",
             phone: "+254782453433",
             districts: ["Kampala"],
-            ips: [8],
-            types: ['ip'],
-            outcomes: ['+8618192235467'],
+            ips: ["KAMPALA DHO"],
+            types: ['Sub-consignee'],
+            outcomes: ["YI101 - PCR 1 KEEP CHILDREN LEARNING"],
             createdByUserId: 6
         };
         contacts = [contact_john, contact_jade, contact_bill];
@@ -137,7 +137,7 @@ describe('Server API', function () {
                         .set('Accept', 'application/json')
                         .expect('Content-Type', /json/)
                         .expect(function (response) {
-                            expect(response.body.length).toEqual(2)
+                            expect(response.body.length).toEqual(2);
                         })
                         .expect(200, done);
                 });
@@ -152,7 +152,16 @@ describe('Server API', function () {
                         .set('Accept', 'application/json')
                         .expect('Content-Type', /json/)
                         .expect(function (response) {
-                            expect(response.body.length).toEqual(1)
+                            expect(response.body.length).toEqual(1);
+                            var firstContact = response.body[0];
+                            expect(firstContact.firstName).toEqual(contact_john.firstName);
+                            expect(firstContact.lastName).toEqual(contact_john.lastName);
+                            expect(firstContact.phone).toEqual(contact_john.phone);
+                            expect(isArrayEqual(firstContact.districts, contact_john.districts)).toBeTruthy();
+                            expect(isArrayEqual(firstContact.ips, contact_john.ips)).toBeTruthy();
+                            expect(isArrayEqual(firstContact.types, contact_john.types)).toBeTruthy();
+                            expect(isArrayEqual(firstContact.outcomes, contact_john.outcomes)).toBeTruthy();
+                            expect(firstContact.createdOn).toBeDefined();
                         })
                         .expect(200, done);
                 });
@@ -173,7 +182,6 @@ describe('Server API', function () {
 
         it('gets a contact by id', function (done) {
             contactsProvider.add(contact_john, function (err, addedContact) {
-
                 request(app)
                     .get('/api/contacts/' + addedContact._id)
                     .expect('Content-Type', /json/)
@@ -291,9 +299,9 @@ describe('Server API', function () {
                     lastName: "Bob",
                     phone: "+254701443432",
                     districts: ["Kampala"],
-                    ips: [8, 20],
-                    types: ["update ip"],
-                    outcomes: ["+8618794849374"]
+                    ips: ["KAMPALA DHO", "WAKISO DHO"],
+                    types: ["End-user"],
+                    outcomes: ["YI105 - PCR 1 KEEP CHILDREN AND MOTHERS"]
                 };
 
                 request(app)
@@ -323,7 +331,7 @@ describe('Server API', function () {
                     lastName: "Bob",
                     phone: "0779500795",
                     districts: "Kampala",
-                    ips: [1, 2]
+                    ips: ["KAMPALA DHO", "WAKISO DHO"]
                 };
 
                 request(app)
@@ -346,9 +354,9 @@ describe('Server API', function () {
                     lastName: "Bob",
                     phone: "+254701443432",
                     districts: ["Kampala"],
-                    ips: [8, 20],
-                    types: ["update ip"],
-                    outcomes: ["+8618794849374"],
+                    ips: ["KAMPALA DHO", "WAKISO DHO"],
+                    types: ['Sub-consignee'],
+                    outcomes: ["YI101 - PCR 1 KEEP CHILDREN LEARNING"],
                 };
 
                 request(app)

@@ -14,9 +14,9 @@ describe("ContactsProvider", function () {
             lastName: "Doe",
             phone: "+254782443432",
             districts: ["Wakiso"],
-            ips: [10, 20],
-            types: ['end user'],
-            outcomes: ['+8615388618154'],
+            ips: ["KAMPALA DHO", "WAKISO DHO"],
+            types: ['End-user'],
+            outcomes: ["YI101 - PCR 1 KEEP CHILDREN LEARNING"],
             createdByUserId: 5
         };
         contact_jade = {
@@ -24,9 +24,9 @@ describe("ContactsProvider", function () {
             lastName: "Sam",
             phone: "+254782443431",
             districts: ["Kampala"],
-            ips: [8],
-            types: ['sub consignee'],
-            outcomes: ['+8618192235667'],
+            ips: ["KAMPALA DHO"],
+            types: ['Sub-consignee'],
+            outcomes: ["YI105 - PCR 1 KEEP CHILDREN AND MOTHERS"],
             createdByUserId: 5
         };
         contacts = [contact_john, contact_jade];
@@ -58,16 +58,16 @@ describe("ContactsProvider", function () {
                 lastName: "Doe",
                 phone: "+254782443432",
                 districts: "Kampala",
-                types: ['update end user'],
-                outcomes: ['+18714957839'],
-                ips: [8]
+                types: ['UPDATE END USER'],
+                outcomes: ['YI101 - PCR 1 KEEP CHILDREN LEARNING'],
+                ips: ["UPDATE WAKISO DHO"]
             }, function (err, editedContact) {
                 expect(editedContact.firstName).toBe("Jack");
                 expect(editedContact.lastName).toBe("Doe");
                 expect(isArrayEqual(editedContact.districts, ["Kampala"])).toBeTruthy();
-                expect(isArrayEqual(editedContact.types, ["update end user"])).toBeTruthy();
-                expect(isArrayEqual(editedContact.outcomes, ["+18714957839"])).toBeTruthy();
-                expect(isArrayEqual(editedContact.ips, [8])).toBeTruthy();
+                expect(isArrayEqual(editedContact.types, ["UPDATE END USER"])).toBeTruthy();
+                expect(isArrayEqual(editedContact.outcomes, ["YI101 - PCR 1 KEEP CHILDREN LEARNING"])).toBeTruthy();
+                expect(isArrayEqual(editedContact.ips, ["UPDATE WAKISO DHO"])).toBeTruthy();
                 done();
             });
         });
@@ -116,7 +116,7 @@ describe("ContactsProvider", function () {
             lastName: "Bill",
             phone: "+254782453431",
             districts: ["Kampala"],
-            ips: [8],
+            ips: ["KAMPALA DHO"],
             createdByUserId: 5
         };
         var contacts = [contact_john, contact_jade, contact_bill];

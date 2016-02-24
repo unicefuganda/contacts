@@ -9,7 +9,7 @@ var contactSchema = mongoose.Schema({
     phone: {type: String, required: true, unique: true},
     createdByUserId: {type: Number, required: true},
     districts: {type: [String]},
-    ips: {type: [Number]},
+    ips: {type: [String]},
     types: {type: [String]},
     outcomes: {type: [String]},
     createdOn: {type: Date, 'default': Date.now},
@@ -66,31 +66,27 @@ module.exports = function (dbURI) {
 
         findExtended: function (createdByUserId, matcher, callback) {
             var query = Contact.find()
-                .select('firstName lastName phone fullName createdByUserId districts ips');
+                .select('firstName lastName phone fullName createdByUserId districts ips types outcomes createdOn');
 
             if (createdByUserId) {
                 query.where('createdByUserId').equals(createdByUserId);
             }
 
-            if (matcher) {
-                if (typeof matcher === 'string') {
-                    var regexMatcher = new RegExp(RegExp.quote(matcher), 'i');
-                    query.or([
-                        {firstName: regexMatcher},
-                        {lastName: regexMatcher},
-                        {phone: regexMatcher},
-                        {fullName: regexMatcher},
-                        {districts: regexMatcher},
-                        {types: regexMatcher},
-                        {outcomes: regexMatcher}
-                    ])
-                }
-                if (typeof matcher === 'number') {
-                    query.where('ips').equals(matcher);
-                }
+            if (matcher && (typeof matcher === 'string')) {
+                var regexMatcher = new RegExp(RegExp.quote(matcher), 'i');
+                query.or([
+                    {firstName: regexMatcher},
+                    {lastName: regexMatcher},
+                    {phone: regexMatcher},
+                    {fullName: regexMatcher},
+                    {districts: regexMatcher},
+                    {ips: regexMatcher},
+                    {types: regexMatcher},
+                    {outcomes: regexMatcher}
+                ])
             }
 
-            query.sort('firstName lastName')
+            query.sort('firstName lastName');
             query.exec(function (err, contacts) {
                 callback(err, contacts);
             });
