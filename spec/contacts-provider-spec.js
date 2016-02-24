@@ -17,7 +17,8 @@ describe("ContactsProvider", function () {
             ips: ["KAMPALA DHO", "WAKISO DHO"],
             types: ['End-user'],
             outcomes: ["YI101 - PCR 1 KEEP CHILDREN LEARNING"],
-            createdByUserId: 5
+            createdByUserId: 5,
+            createdByUserGroup: "UNICEF"
         };
         contact_jade = {
             firstName: "Jade",
@@ -27,7 +28,8 @@ describe("ContactsProvider", function () {
             ips: ["KAMPALA DHO"],
             types: ['Sub-consignee'],
             outcomes: ["YI105 - PCR 1 KEEP CHILDREN AND MOTHERS"],
-            createdByUserId: 5
+            createdByUserId: 5,
+            createdByUserGroup: "IP"
         };
         contacts = [contact_john, contact_jade];
     });
@@ -42,6 +44,7 @@ describe("ContactsProvider", function () {
             expect(newContact.firstName).toBe(contact_john.firstName);
             expect(newContact.lastName).toBe(contact_john.lastName);
             expect(newContact.phone).toBe(contact_john.phone);
+            expect(newContact.createdByUserGroup).toBe(contact_john.createdByUserGroup);
             expect(newContact.createdOn).toBeDefined();
             expect(isArrayEqual(newContact.districts, contact_john.districts)).toBeTruthy();
             expect(isArrayEqual(newContact.types, contact_john.types)).toBeTruthy();
@@ -117,14 +120,17 @@ describe("ContactsProvider", function () {
             phone: "+254782453431",
             districts: ["Kampala"],
             ips: ["KAMPALA DHO"],
-            createdByUserId: 5
+            types: ['Sub-consignee'],
+            outcomes: ["YI105 - PCR 1 KEEP CHILDREN AND MOTHERS"],
+            createdByUserId: 5,
+            createdByUserGroup: 'IP'
         };
         var contacts = [contact_john, contact_jade, contact_bill];
 
         contactsProvider.addAll(contacts, function () {
             contactsProvider.find("Jade", function (err, contacts) {
-                expect(contacts.toString()).toContain(contact_bill.firstName);
-                expect(contacts.toString()).toContain(contact_jade.firstName);
+                expect(contacts.toString()).toContain(contact_bill.lastName);
+                expect(contacts.toString()).toContain(contact_jade.lastName);
                 expect(contacts.length).toBe(2);
                 done();
             });
@@ -147,7 +153,11 @@ describe("ContactsProvider", function () {
                 expect(foundContact._id).toEqual(addedContact._id);
                 expect(foundContact.firstName).toEqual(addedContact.firstName);
                 expect(foundContact.lastName).toEqual(addedContact.lastName);
+                expect(foundContact.createdByUserGroup).toEqual(addedContact.createdByUserGroup);
+
                 expect(isArrayEqual(foundContact.districts, addedContact.districts)).toBeTruthy();
+                expect(isArrayEqual(foundContact.types, addedContact.types)).toBeTruthy();
+                expect(isArrayEqual(foundContact.outcomes, addedContact.outcomes)).toBeTruthy();
                 expect(isArrayEqual(foundContact.ips, addedContact.ips)).toBeTruthy()
                 done();
             });

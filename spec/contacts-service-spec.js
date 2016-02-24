@@ -19,7 +19,9 @@ describe('Server API', function () {
             ips: ["KAMPALA DHO", "WAKISO DHO"],
             types: ['End-user'],
             outcomes: ["YI101 - PCR 1 KEEP CHILDREN LEARNING"],
-            createdByUserId: 5
+            createdByUserId: 5,
+            createdByUserGroup: "UNICEF"
+
         };
         contact_jade = {
             firstName: "Jade",
@@ -29,6 +31,7 @@ describe('Server API', function () {
             ips: ["KAMPALA DHO"],
             types: ['End-user'],
             outcomes: ["YI101 - PCR 1 KEEP CHILDREN LEARNING"],
+            createdByUserGroup: "UNICEF",
             createdByUserId: 5
         };
         contact_bill = {
@@ -39,6 +42,7 @@ describe('Server API', function () {
             ips: ["KAMPALA DHO"],
             types: ['Sub-consignee'],
             outcomes: ["YI101 - PCR 1 KEEP CHILDREN LEARNING"],
+            createdByUserGroup: "UNICEF",
             createdByUserId: 6
         };
         contacts = [contact_john, contact_jade, contact_bill];
@@ -211,7 +215,8 @@ describe('Server API', function () {
                 ips: [],
                 types: [],
                 outcomes: [],
-                createdByUserId: 5
+                createdByUserId: 5,
+                createdByUserGroup: "UNICEF"
             };
             request(app)
                 .post('/api/contacts/')

@@ -8,6 +8,7 @@ var contactSchema = mongoose.Schema({
     fullName: {type: String, required: true},
     phone: {type: String, required: true, unique: true},
     createdByUserId: {type: Number, required: true},
+    createdByUserGroup: {type: String, required: true},
     districts: {type: [String]},
     ips: {type: [String]},
     types: {type: [String]},
@@ -51,6 +52,7 @@ module.exports = function (dbURI) {
         edit: function (contact_id, contactDetails, callback) {
             extendFullName(contactDetails);
             delete contactDetails["createdByUserId"];
+            delete contactDetails["createdByUserGroup"];
             Contact.findByIdAndUpdate(contact_id, {$set: contactDetails}, function (err, updatedContact) {
                 callback(err, updatedContact);
             });
@@ -66,7 +68,7 @@ module.exports = function (dbURI) {
 
         findExtended: function (createdByUserId, matcher, callback) {
             var query = Contact.find()
-                .select('firstName lastName phone fullName createdByUserId districts ips types outcomes createdOn');
+                .select('firstName lastName phone fullName createdByUserId districts ips types outcomes createdOn createdByUserGroup');
 
             if (createdByUserId) {
                 query.where('createdByUserId').equals(createdByUserId);
@@ -80,6 +82,7 @@ module.exports = function (dbURI) {
                     {phone: regexMatcher},
                     {fullName: regexMatcher},
                     {districts: regexMatcher},
+                    {createdByUserGroup: regexMatcher},
                     {ips: regexMatcher},
                     {types: regexMatcher},
                     {outcomes: regexMatcher}
@@ -94,7 +97,7 @@ module.exports = function (dbURI) {
 
         findById: function (contactId, callback) {
             Contact.findById(contactId)
-                .select('firstName lastName phone districts ips types outcomes createdOn')
+                .select('firstName lastName phone districts ips types outcomes createdOn createdByUserGroup')
                 .exec(function (err, contact) {
                     callback(err, contact);
                 });
